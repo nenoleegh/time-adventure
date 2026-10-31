@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>电子小恐龙 · MVP 设计方案</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --ink: #183a3b;
+      --muted: #66817f;
+      --mint: #0d8179;
+      --mint-dark: #075e59;
+      --mint-soft: #dff4ed;
+      --paper: #fffdf7;
+      --coral: #ff8a65;
+      --yellow: #ffc94d;
+      --lilac: #9b7bd4;
+      --line: #d5e8e1;
+      --shadow: 0 24px 65px rgba(18, 87, 83, .12);
+    }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      display: grid;
+      place-items: center;
+      padding: 34px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 5%, rgba(71, 192, 173, .22), transparent 28rem),
+        radial-gradient(circle at 92% 4%, rgba(255, 154, 105, .18), transparent 30rem),
+        #eaf6f2;
+      font-family: "PingFang SC", "Hiragino Sans GB", sans-serif;
+    }
+    .board {
+      width: 1480px;
+      min-height: 1130px;
+      padding: 34px;
+      border: 1px solid rgba(166, 207, 197, .8);
+      border-radius: 34px;
+      background: rgba(255, 254, 249, .88);
+      box-shadow: var(--shadow);
+    }
+    .board-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+    .eyebrow {
+      color: var(--mint);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .14em;
+    }
+    h1 {
+      margin: 7px 0 5px;
+      font-size: 34px;
+      letter-spacing: -.04em;
+    }
+    .subtitle { margin: 0; color: var(--muted); font-size: 14px; }
+    .concept-tag {
+      padding: 9px 13px;
+      border: 1px solid #efcfaa;
+      border-radius: 999px;
+      background: #fff1d8;
+      color: #9a5a20;
+      font-size: 11px;
+      font-weight: 750;
+    }
+    .app {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 410px;
+      gap: 18px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: #f3faf7;
+      box-shadow: inset 0 1px 0 white;
+    }
+    .topbar {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 58px;
+      padding: 0 9px 0 4px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--mint);
+      color: white;
+      font-family: monospace;
+      font-size: 22px;
+      font-weight: 900;
+    }
+    .brand strong, .brand small { display: block; }
+    .brand strong { font-size: 17px; }
+    .brand small { margin-top: 2px; color: var(--muted); font-size: 8px; letter-spacing: .13em; }
+    .top-actions { display: flex; align-items: center; gap: 8px; }
+    .day-chip, .parent-chip {
+      padding: 8px 11px;
+      border-radius: 999px;
+      font-size: 11px;
+    }
+    .day-chip { background: white; border: 1px solid var(--line); }
+    .parent-chip { border: 0; background: var(--mint-soft); color: var(--mint-dark); font-weight: 700; }
+    .left-column { display: grid; gap: 15px; }
+    .pet-card {
+      overflow: hidden;
+      min-height: 670px;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: var(--paper);
+      box-shadow: 0 9px 24px rgba(26, 101, 95, .06);
+    }
+    .pet-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 23px 25px 15px;
+    }
+    .pet-heading h2 { margin: 4px 0 5px; font-size: 29px; }
+    .pet-heading p { margin: 0; color: var(--muted); font-size: 12px; }
+    .health-chip {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 11px;
+      border-radius: 999px;
+      background: #e2f6e8;
+      color: #2d7a48;
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .health-chip i {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #49ad68;
+      box-shadow: 0 0 0 4px rgba(73, 173, 104, .15);
+    }
+    .habitat {
+      position: relative;
+      height: 425px;
+      margin: 0 18px;
+      overflow: hidden;
+      border: 1px solid #cde6dc;
+      border-radius: 22px;
+      background:
+        linear-gradient(transparent 74%, rgba(103, 171, 117, .28) 74%),
+        repeating-linear-gradient(0deg, transparent 0 38px, rgba(94, 164, 157, .08) 38px 39px),
+        repeating-linear-gradient(90deg, transparent 0 38px, rgba(94, 164, 157, .08) 38px 39px),
+        linear-gradient(#dff8f5, #f6fbf3 72%, #cce9bc 72%);
+    }
+    .habitat::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 47%, rgba(255,255,255,.6), transparent 26%);
+      pointer-events: none;
+    }
+    .sun {
+      position: absolute;
+      top: 27px;
+      right: 33px;
+      width: 52px;
+      height: 52px;
+      background: #ffe377;
+      box-shadow:
+        -8px 0 #ffe377, 8px 0 #ffe377, 0 -8px #ffe377, 0 8px #ffe377,
+        -16px -16px 0 -6px rgba(255, 227, 119, .55),
+        16px -16px 0 -6px rgba(255, 227, 119, .55);
+    }
+    .cloud {
+      position: absolute;
+      width: 70px;
+      height: 22px;
+      background: rgba(255,255,255,.84);
+      box-shadow: 17px -11px rgba(255,255,255,.84), 38px 0 rgba(255,255,255,.84);
+    }
+    .cloud.one { top: 52px; left: 78px; }
+    .cloud.two { top: 104px; left: 410px; transform: scale(.75); opacity: .8; }
+    .ground-block {
+      position: absolute;
+      bottom: 0;
+      width: 32px;
+      background: #a9d58c;
+      box-shadow: inset 0 8px #8bc575;
+    }
+    .speech {
+      position: absolute;
+      z-index: 5;
+      top: 55px;
+      left: 110px;
+      width: 220px;
+      padding: 14px 16px;
+      border: 3px solid var(--ink);
+      border-radius: 16px;
+      background: white;
+      font-size: 13px;
+      font-weight: 750;
+      line-height: 1.55;
+      box-shadow: 5px 5px 0 rgba(24, 58, 59, .12);
+    }
+    .speech::after {
+      content: "";
+      position: absolute;
+      left: 53px;
+      bottom: -17px;
+      width: 23px;
+      height: 23px;
+      border-right: 3px solid var(--ink);
+      border-bottom: 3px solid var(--ink);
+      background: white;
+      transform: rotate(45deg);
+    }
+    .dino-wrap {
+      position: absolute;
+      z-index: 4;
+      left: 50%;
+      bottom: 36px;
+      width: 405px;
+      transform: translateX(-48%);
+      filter: drop-shadow(0 18px 7px rgba(28, 91, 68, .16));
+      animation: bob 2.2s steps(2, end) infinite;
+    }
+    @keyframes bob { 50% { transform: translateX(-48%) translateY(-6px); } }
+    .dino { width: 100%; image-rendering: pixelated; shape-rendering: crispEdges; }
+    .dino-wrap > svg { display: none; }
+    .dino-sprite {
+      display: block;
+      width: 100%;
+    }
+    .heart {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: #ff7894;
+      box-shadow: -10px -10px #ff7894, 10px -10px #ff7894, -18px 0 #ff7894, 18px 0 #ff7894, 0 10px #ff7894;
+      opacity: .9;
+    }
+    .heart.a { top: 205px; right: 117px; transform: scale(.7); }
+    .heart.b { top: 240px; right: 81px; transform: scale(.45); opacity: .65; }
+    .egg-shadow { display: none; }
+    .bottom-decor {
+      position: absolute;
+      bottom: 18px;
+      width: 80px;
+      height: 66px;
+    }
+    .bottom-decor.food { left: 36px; }
+    .bottom-decor.water { right: 39px; }
+    .bowl {
+      position: absolute;
+      bottom: 0;
+      left: 7px;
+      width: 66px;
+      height: 27px;
+      border-radius: 0 0 18px 18px;
+      background: #f49d65;
+      box-shadow: inset 0 7px #ffc092;
+    }
+    .food-pixels { position: absolute; bottom: 20px; left: 22px; width: 12px; height: 12px; background: #7fae53; box-shadow: 14px -5px #a7ca63, 27px 2px #86b95d; }
+    .water-glass {
+      position: absolute;
+      right: 9px;
+      bottom: 0;
+      width: 45px;
+      height: 57px;
+      border: 4px solid #80cbd0;
+      border-top: 0;
+      background: linear-gradient(to top, #8ddce0 0 52%, transparent 52%);
+      box-shadow: inset 0 0 0 4px rgba(255,255,255,.45);
+    }
+    .needs-card {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 16px 18px 18px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: white;
+    }
+    .need { min-width: 0; }
+    .need-label { display: flex; justify-content: space-between; gap: 5px; font-size: 10px; font-weight: 750; }
+    .need-label span:last-child { color: var(--muted); }
+    .bar { height: 7px; margin-top: 8px; overflow: hidden; border-radius: 99px; background: #edf3f0; }
+    .bar i { display: block; height: 100%; border-radius: inherit; background: var(--mint); }
+    .need:nth-child(2) .bar i { background: #4ea9d4; }
+    .need:nth-child(3) .bar i { background: var(--yellow); }
+    .need:nth-child(4) .bar i { background: #ef8095; }
+    .actions-card {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      padding: 0 18px 18px;
+    }
+    .care-button {
+      display: grid;
+      place-items: center;
+      gap: 5px;
+      min-height: 93px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: white;
+      color: var(--ink);
+      box-shadow: 0 5px 0 #dcece6;
+    }
+    .care-button .pixel-icon {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--mint-soft);
+      font: 900 23px/1 monospace;
+      color: var(--mint-dark);
+    }
+    .care-button strong { font-size: 12px; }
+    .care-button small { color: var(--muted); font-size: 8px; }
+    .care-button:nth-child(1) .pixel-icon { background: #fff0da; color: #ad6b22; }
+    .care-button:nth-child(2) .pixel-icon { background: #e0f4fb; color: #267e9c; }
+    .care-button:nth-child(3) .pixel-icon { background: #f2ebff; color: #7655ab; }
+    .care-button:nth-child(4) .pixel-icon { background: #ffe6ec; color: #a8415c; }
+    .side-panel { display: grid; align-content: start; gap: 13px; }
+    .side-card {
+      padding: 21px;
+      border: 1px solid var(--line);
+      border-radius: 21px;
+      background: var(--paper);
+    }
+    .side-card h3 { margin: 5px 0 4px; font-size: 19px; }
+    .side-card > p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.55; }
+    .streak-card {
+      color: white;
+      border-color: transparent;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.09), transparent 55%),
+        var(--mint);
+      box-shadow: 0 15px 30px rgba(13, 129, 121, .18);
+    }
+    .streak-top { display: flex; align-items: flex-end; justify-content: space-between; }
+    .streak-top strong { font-size: 50px; line-height: .95; letter-spacing: -.06em; }
+    .streak-top span { color: rgba(255,255,255,.75); font-size: 11px; }
+    .streak-card > p { color: rgba(255,255,255,.72); }
+    .streak-dots { display: flex; gap: 6px; margin-top: 14px; }
+    .streak-dots i {
+      flex: 1;
+      height: 9px;
+      border-radius: 99px;
+      background: rgba(255,255,255,.23);
+    }
+    .streak-dots i.done { background: #ffe17d; }
+    .countdown {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: center;
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 13px;
+      background: #fff4dd;
+      color: #8f5a1f;
+    }
+    .countdown strong { font-size: 22px; }
+    .countdown span { font-size: 9px; line-height: 1.45; }
+    .stage-list { display: grid; gap: 12px; margin-top: 16px; }
+    .stage-row { display: grid; grid-template-columns: 31px 1fr auto; gap: 10px; align-items: center; }
+    .stage-dot {
+      display: grid;
+      place-items: center;
+      width: 31px;
+      height: 31px;
+      border-radius: 9px;
+      background: var(--mint-soft);
+      color: var(--mint-dark);
+      font: 800 13px monospace;
+    }
+    .stage-row strong, .stage-row small { display: block; }
+    .stage-row strong { font-size: 10px; }
+    .stage-row small { margin-top: 2px; color: var(--muted); font-size: 8px; }
+    .stage-state { color: var(--muted); font-size: 8px; }
+    .stage-row.done .stage-dot { background: var(--mint); color: white; }
+    .stage-row.next .stage-dot { background: #fff0cc; color: #9c6824; }
+    .calendar-note {
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+      padding: 13px;
+      border: 1px dashed #b9d8d0;
+      border-radius: 14px;
+      background: #f3fbf8;
+      color: var(--muted);
+      font-size: 9px;
+      line-height: 1.55;
+    }
+    .calendar-note b { color: var(--ink); }
+    .nav {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 7px;
+      width: min(680px, 72%);
+      margin: 0 auto;
+      padding: 7px;
+      border: 1px solid #d7e7e2;
+      border-radius: 21px;
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 12px 28px rgba(31, 91, 84, .1);
+    }
+    .nav button {
+      display: grid;
+      place-items: center;
+      gap: 2px;
+      min-height: 49px;
+      border: 0;
+      border-radius: 15px;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 9px;
+    }
+    .nav button span { font: 800 18px monospace; }
+    .nav button.active { background: var(--mint-soft); color: var(--mint-dark); }
+    .flow {
+      display: grid;
+      grid-template-columns: 1.1fr repeat(3, 1fr) 1.15fr;
+      gap: 12px;
+      margin-top: 22px;
+    }
+    .flow-card {
+      position: relative;
+      min-height: 155px;
+      padding: 17px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fbfefb;
+    }
+    .flow-card::after {
+      content: "→";
+      position: absolute;
+      top: 50%;
+      right: -17px;
+      z-index: 2;
+      color: var(--mint);
+      font-size: 18px;
+      font-weight: 800;
+      transform: translateY(-50%);
+    }
+    .flow-card:last-child::after { display: none; }
+    .flow-card .mini { font: 900 22px monospace; color: var(--mint); }
+    .flow-card h4 { margin: 8px 0 4px; font-size: 13px; }
+    .flow-card p { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.55; }
+    .flow-card .timer {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: var(--mint-soft);
+      color: var(--mint-dark);
+      font-size: 8px;
+      font-weight: 750;
+    }
+    .flow-card.warn { background: #fff8e8; border-color: #efdbb4; }
+    .flow-card.warn .mini, .flow-card.warn .timer { color: #9b6322; }
+    .flow-card.warn .timer { background: #ffedc6; }
+    .flow-card.danger { background: #fff0ed; border-color: #f1c9c1; }
+    .flow-card.danger .mini, .flow-card.danger .timer { color: #a74635; }
+    .flow-card.danger .timer { background: #ffdcd4; }
+    .flow-card.rest { background: #f3f0fa; border-color: #ded3f0; }
+    .flow-card.rest .mini, .flow-card.rest .timer { color: #6d559f; }
+    .flow-card.rest .timer { background: #e9e0fa; }
+    .design-notes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .design-note {
+      padding: 15px 17px;
+      border-radius: 15px;
+      background: #f7fbf9;
+      border: 1px solid var(--line);
+    }
+    .design-note strong { display: block; margin-bottom: 5px; font-size: 11px; }
+    .design-note p { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <main class="board">
+    <header class="board-head">
+      <div>
+        <span class="eyebrow">TIME ADVENTURE / PET LAB</span>
+        <h1>电子小恐龙养成 · MVP 视觉方案</h1>
+        <p class="subtitle">像素 Q 版 · 轻量照料 · 按时提醒 · 可理解的状态倒计时</p>
+      </div>
+      <span class="concept-tag">测试功能设计稿 · 非最终界面</span>
+    </header>
+
+    <section class="app">
+      <div class="topbar">
+        <div class="brand">
+          <span class="brand-mark">✦</span>
+          <span><strong>时间冒险家</strong><small>TIME ADVENTURE</small></span>
+        </div>
+        <div class="top-actions">
+          <span class="day-chip">10月25日 · 第3天</span>
+          <button class="parent-chip">家长</button>
+        </div>
+      </div>
+
+      <div class="left-column">
+        <section class="pet-card">
+          <div class="pet-heading">
+            <div>
+              <span class="eyebrow">我的小恐龙</span>
+              <h2>泡泡今天很有精神</h2>
+              <p>连续照料 3 天 · 再照顾 4 天就能进入少年期</p>
+            </div>
+            <span class="health-chip"><i></i>健康</span>
+          </div>
+
+          <div class="habitat">
+            <span class="sun"></span>
+            <span class="cloud one"></span>
+            <span class="cloud two"></span>
+            <div class="speech">今天也一起完成计划吧！<br>我在这里等你回来。</div>
+            <span class="heart a"></span>
+            <span class="heart b"></span>
+            <div class="dino-wrap">
+              <img class="dino dino-sprite" src="./assets/dino-sprite-reference.png" alt="用户指定的像素小恐龙">
+              <svg class="dino" viewBox="0 0 520 440" aria-label="像素小恐龙">
+                <g shape-rendering="crispEdges">
+                  <!-- 尾巴 -->
+                  <path d="M322 306H382V288H414V266H440V244H468V270H446V294H424V316H398V340H354Z" fill="#194f3d"/>
+                  <path d="M330 314H384V298H416V276H442V258H454V268H438V290H416V310H390V332H358Z" fill="#49b66f"/>
+                  <path d="M390 302H416V284H438V270H446V280H432V298H414V318H390Z" fill="#81de8e"/>
+
+                  <!-- 头顶小角与背刺 -->
+                  <path d="M204 120V96H220V72H240V96H252V112Z" fill="#ff8b64"/>
+                  <path d="M222 111V94H236V79H246V98H252V112Z" fill="#ffd57a"/>
+                  <path d="M290 108V82H306V64H324V88H336V116Z" fill="#ff8b64"/>
+                  <path d="M306 108V91H318V76H326V94H336V111Z" fill="#ffd57a"/>
+
+                  <!-- 身体 -->
+                  <path d="M154 288H344V302H366V386H344V414H286V390H232V414H174V386H150V306H154Z" fill="#1b563f"/>
+                  <path d="M166 296H336V310H354V376H334V402H296V378H222V402H184V376H162V314H166Z" fill="#5bc77b"/>
+                  <path d="M322 310H354V376H334V402H306V354H322Z" fill="#3aaa68"/>
+                  <path d="M214 307H302V330H326V366H304V390H220V372H190V332H214Z" fill="#d8f2a5"/>
+                  <path d="M302 330H326V366H304V390H270V350H302Z" fill="#b8e589"/>
+
+                  <!-- 短手 -->
+                  <path d="M148 328H174V354H166V370H146V350H136V336H148Z" fill="#1b563f"/>
+                  <path d="M150 334H166V352H158V360H150V348H142V340H150Z" fill="#65cf82"/>
+                  <path d="M354 328H382V344H390V364H370V354H350Z" fill="#1b563f"/>
+                  <path d="M360 334H376V344H384V354H370V348H358Z" fill="#65cf82"/>
+
+                  <!-- 腿和脚爪 -->
+                  <path d="M176 380H244V420H258V438H214V426H174Z" fill="#1b563f"/>
+                  <path d="M186 386H236V416H244V426H184Z" fill="#55bf74"/>
+                  <path d="M284 380H344V410H360V438H316V426H282Z" fill="#1b563f"/>
+                  <path d="M294 386H336V414H346V426H292Z" fill="#55bf74"/>
+                  <path d="M179 425H205V436H179ZM218 425H244V436H218ZM292 425H318V436H292ZM329 425H355V436H329Z" fill="#eff6b6"/>
+
+                  <!-- 头部轮廓 -->
+                  <path d="M148 262V194H162V154H184V124H216V100H298V108H328V128H350V154H370V244H356V280H330V304H184V286H162V266H148Z" fill="#194f3d"/>
+                  <path d="M160 252V202H174V162H196V132H224V112H292V120H320V140H338V164H358V238H344V270H320V294H192V278H174V254H160Z" fill="#66d084"/>
+
+                  <!-- 头部阴影与高光 -->
+                  <path d="M320 140H338V164H358V238H344V270H320V294H290V278H318V254H330V176H320Z" fill="#45b66d"/>
+                  <path d="M196 132H224V120H246V136H212V154H190Z" fill="#97e49c"/>
+                  <path d="M184 258H208V278H232V286H192V274H184Z" fill="#3aa663"/>
+
+                  <!-- 大眼睛 -->
+                  <path d="M200 158H248V176H258V210H246V224H218V216H204V198H200Z" fill="#163f43"/>
+                  <rect x="208" y="164" width="16" height="16" fill="#ffffff"/>
+                  <rect x="228" y="190" width="10" height="10" fill="#8fe3ef"/>
+                  <path d="M278 158H326V176H336V210H324V224H296V216H282V198H278Z" fill="#163f43"/>
+                  <rect x="286" y="164" width="16" height="16" fill="#ffffff"/>
+                  <rect x="306" y="190" width="10" height="10" fill="#8fe3ef"/>
+
+                  <!-- 口鼻、微笑和腮红 -->
+                  <path d="M180 214H338V248H326V266H304V278H218V266H198V250H180Z" fill="#d8f3a5"/>
+                  <path d="M294 214H338V248H326V266H306V252H294Z" fill="#bbe58a"/>
+                  <rect x="210" y="230" width="12" height="8" fill="#2f7258"/>
+                  <rect x="292" y="230" width="12" height="8" fill="#2f7258"/>
+                  <path d="M226 250H248V258H274V250H296V260H286V268H238V260H226Z" fill="#245b4d"/>
+                  <rect x="244" y="257" width="20" height="10" fill="#ef8396"/>
+                  <path d="M178 226H202V238H178ZM316 226H340V238H316Z" fill="#f49cae"/>
+
+                  <!-- 小鳞片和肚皮纹理 -->
+                  <path d="M182 174H194V186H182ZM158 212H170V224H158ZM332 156H344V168H332Z" fill="#8be29a"/>
+                  <path d="M214 344H234V352H214ZM266 326H286V334H266ZM234 364H254V372H234Z" fill="#eaf7b9"/>
+                </g>
+              </svg>
+            </div>
+            <div class="bottom-decor food">
+              <span class="food-pixels"></span>
+              <span class="bowl"></span>
+            </div>
+            <div class="bottom-decor water"><span class="water-glass"></span></div>
+          </div>
+
+          <div class="needs-card">
+            <div class="need"><div class="need-label"><span>饱腹</span><span>78%</span></div><div class="bar"><i style="width:78%"></i></div></div>
+            <div class="need"><div class="need-label"><span>水分</span><span>64%</span></div><div class="bar"><i style="width:64%"></i></div></div>
+            <div class="need"><div class="need-label"><span>清洁</span><span>82%</span></div><div class="bar"><i style="width:82%"></i></div></div>
+            <div class="need"><div class="need-label"><span>心情</span><span>91%</span></div><div class="bar"><i style="width:91%"></i></div></div>
+          </div>
+
+          <div class="actions-card">
+            <button class="care-button"><span class="pixel-icon">▣</span><strong>喂食</strong><small>莓果饼干</small></button>
+            <button class="care-button"><span class="pixel-icon">◒</span><strong>喂水</strong><small>清凉泉水</small></button>
+            <button class="care-button"><span class="pixel-icon">✦</span><strong>清理</strong><small>打扫小屋</small></button>
+            <button class="care-button"><span class="pixel-icon">♥</span><strong>抚摸</strong><small>陪它玩耍</small></button>
+          </div>
+        </section>
+      </div>
+
+      <aside class="side-panel">
+        <section class="side-card streak-card">
+          <div class="streak-top"><div><span class="eyebrow" style="color:rgba(255,255,255,.7)">连续照料</span><strong>3</strong></div><span>天</span></div>
+          <p>今天已完成喂食、喂水和清理。</p>
+          <div class="streak-dots"><i class="done"></i><i class="done"></i><i class="done"></i><i></i><i></i><i></i><i></i></div>
+        </section>
+
+        <section class="side-card">
+          <span class="eyebrow">安全倒计时</span>
+          <h3>离精神不振还有 21 小时</h3>
+          <p>这里始终显示距离下一状态的剩余时间，不会突然生病或离开。</p>
+          <div class="countdown"><strong>72h</strong><span>上次有效照料：今天 08:20<br>下一次照料提醒：18:30</span></div>
+        </section>
+
+        <section class="side-card">
+          <span class="eyebrow">成长旅程</span>
+          <h3>从蛋到伙伴</h3>
+          <div class="stage-list">
+            <div class="stage-row done"><span class="stage-dot">1</span><div><strong>破壳而出</strong><small>轻点蛋壳，见证孵化</small></div><span class="stage-state">完成</span></div>
+            <div class="stage-row done"><span class="stage-dot">2</span><div><strong>幼龙期</strong><small>学会喂食、喝水和清理</small></div><span class="stage-state">第 3 天</span></div>
+            <div class="stage-row next"><span class="stage-dot">3</span><div><strong>少年期</strong><small>连续照料 7 天解锁</small></div><span class="stage-state">还差 4 天</span></div>
+          </div>
+        </section>
+
+        <section class="calendar-note">
+          <span style="font:900 17px monospace;color:#0d8179">▦</span>
+          <span><b>照料日历</b><br>每天只提醒一次；可在家长区关闭或设置“假期托管”。</span>
+        </section>
+      </aside>
+
+      <nav class="nav">
+        <button><span>✓</span>今天</button>
+        <button><span>☷</span>计划</button>
+        <button class="active"><span>◉</span>小恐龙</button>
+        <button><span>⌁</span>成长</button>
+        <button><span>▣</span>家长</button>
+      </nav>
+    </section>
+
+    <section class="flow">
+      <article class="flow-card">
+        <span class="mini">◇</span>
+        <h4>蛋 · 孵化</h4>
+        <p>轻点蛋壳 3 次，出现裂纹、跳动和孵化动画。可立即开始，不设置漫长等待。</p>
+        <span class="timer">首次进入</span>
+      </article>
+      <article class="flow-card">
+        <span class="mini">◉</span>
+        <h4>健康 · 0–48 小时</h4>
+        <p>四项需求缓慢下降。每完成一次有效照料，会获得表情、动画和照料记录。</p>
+        <span class="timer">第 1–2 天</span>
+      </article>
+      <article class="flow-card warn">
+        <span class="mini">⌢</span>
+        <h4>精神不振 · 72 小时</h4>
+        <p>动作变慢、眼神低落，气泡提示“我今天有点没精神”。立即恢复照料可好转。</p>
+        <span class="timer">3 天未照料</span>
+      </article>
+      <article class="flow-card danger">
+        <span class="mini">×</span>
+        <h4>生病 · 96–143 小时</h4>
+        <p>出现生病特效，解锁“治疗”。治疗后再完成喂食、喂水和清理，状态逐步恢复。</p>
+        <span class="timer">4–5 天危险期</span>
+      </article>
+      <article class="flow-card rest">
+        <span class="mini">☾</span>
+        <h4>暂时离开 · 144 小时</h4>
+        <p>小恐龙缩回化石蛋，展示陪伴天数与照料回忆；家长确认后可重新领养。</p>
+        <span class="timer">6 天游戏结束</span>
+      </article>
+    </section>
+
+    <section class="design-notes">
+      <article class="design-note"><strong>有效照料，避免按钮刷屏</strong><p>只有实际改善一项需求才刷新照料时间；反复喂食不会绕过倒计时。</p></article>
+      <article class="design-note"><strong>提前预警，不做突然惩罚</strong><p>48 小时开始低落、72 小时生病、96 小时加急；首页持续显示倒计时。</p></article>
+      <article class="design-note"><strong>像素宠物，非完整游戏引擎</strong><p>使用 HTML/CSS/SVG、动画和 IndexedDB 时间戳即可实现；不依赖服务器或外部游戏引擎。</p></article>
+    </section>
+  </main>
+  <script>
+    const sprite = document.querySelector(".dino-sprite");
+    sprite.addEventListener("load", () => {
+      const canvas = document.createElement("canvas");
+      canvas.className = "dino dino-sprite";
+      canvas.width = sprite.naturalWidth;
+      canvas.height = sprite.naturalHeight;
+      const context = canvas.getContext("2d", { willReadFrequently: true });
+      context.drawImage(sprite, 0, 0);
+      const image = context.getImageData(0, 0, canvas.width, canvas.height);
+      const pixels = image.data;
+      const width = canvas.width;
+      const height = canvas.height;
+      const visited = new Uint8Array(width * height);
+      const queue = new Int32Array(width * height);
+      let head = 0;
+      let tail = 0;
+      const isBackgroundWhite = (index) => {
+        const offset = index * 4;
+        const red = pixels[offset];
+        const green = pixels[offset + 1];
+        const blue = pixels[offset + 2];
+        return (
+          red > 232 &&
+          green > 232 &&
+          blue > 232 &&
+          Math.max(red, green, blue) - Math.min(red, green, blue) < 12
+        );
+      };
+      const enqueue = (index) => {
+        if (!visited[index] && isBackgroundWhite(index)) {
+          visited[index] = 1;
+          queue[tail++] = index;
+        }
+      };
+      for (let x = 0; x < width; x += 1) {
+        enqueue(x);
+        enqueue((height - 1) * width + x);
+      }
+      for (let y = 0; y < height; y += 1) {
+        enqueue(y * width);
+        enqueue(y * width + width - 1);
+      }
+      while (head < tail) {
+        const index = queue[head++];
+        pixels[index * 4 + 3] = 0;
+        const x = index % width;
+        if (x > 0) enqueue(index - 1);
+        if (x < width - 1) enqueue(index + 1);
+        if (index >= width) enqueue(index - width);
+        if (index < width * (height - 1)) enqueue(index + width);
+      }
+      context.putImageData(image, 0, 0);
+      sprite.replaceWith(canvas);
+    });
+  </script>
+</body>
+</html>

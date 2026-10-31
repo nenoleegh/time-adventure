@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="breeze">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#f5f2ea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="时间冒险家">
+    <meta name="description" content="帮六年级孩子规划、执行和复盘时间的本地应用">
+    <title>时间冒险家</title>
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="./assets/icon-192.png">
+    <link rel="stylesheet" href="./src/styles/main.css?v=1.10.0">
+  </head>
+  <body>
+    <div id="app">
+      <div class="loading-screen">
+        <div class="brand-mark large">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="m12 3 1.7 5.3L19 10l-5.3 1.7L12 17l-1.7-5.3L5 10l5.3-1.7L12 3Z"/>
+          </svg>
+        </div>
+        <h1>时间冒险家</h1>
+        <p>正在找回今天的计划...</p>
+      </div>
+    </div>
+    <dialog id="app-dialog" class="app-dialog"></dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="./vendor/jszip/jszip.min.js"></script>
+    <script type="module" src="./src/app.js?v=1.10.0"></script>
+  </body>
+</html>
