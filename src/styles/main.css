@@ -2201,7 +2201,8 @@ p {
   height: 16px;
 }
 
-.parent-entry {
+.parent-entry,
+.guide-entry {
   display: inline-flex;
   align-items: center;
   gap: 7px;
@@ -2214,9 +2215,14 @@ p {
   font-size: 12px;
 }
 
-.parent-entry .icon {
+.parent-entry .icon,
+.guide-entry .icon {
   width: 15px;
   height: 15px;
+}
+
+.guide-entry {
+  color: var(--teal-deep);
 }
 
 .reward-layout {
@@ -4130,6 +4136,23 @@ textarea {
   border-top: 1px solid var(--line-soft);
 }
 
+.product-settings-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 11px;
+}
+
+.product-settings-heading .subsection-label {
+  margin-bottom: 0;
+}
+
+.product-settings-list {
+  display: grid;
+  gap: 11px;
+}
+
 .subsection-label {
   margin-bottom: 10px;
   font-size: 12px;
@@ -4138,24 +4161,57 @@ textarea {
 
 .product-setting {
   display: grid;
-  grid-template-columns: minmax(120px, 1fr) 110px 100px;
-  gap: 11px;
+  gap: 13px;
+  padding: 15px;
+  border: 1px solid var(--line-soft);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--paper) 55%, var(--surface));
+}
+
+.product-setting-head {
+  display: flex;
   align-items: end;
-  padding: 11px 0;
-  border-bottom: 1px solid var(--line-soft);
+  gap: 10px;
 }
 
-.product-setting-name {
-  align-self: center;
-  font-size: 11px;
+.product-title-field {
+  flex: 1;
 }
 
-.product-setting input {
+.product-description-field {
+  display: block;
+}
+
+.product-setting-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(90px, 1fr));
+  gap: 10px;
+}
+
+.product-setting input,
+.product-setting select {
   width: 100%;
+  min-height: 39px;
   padding: 8px 9px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fcfbf7;
+  color: var(--ink);
+}
+
+.product-setting .input-with-unit {
+  min-height: 39px;
+}
+
+.product-setting.is-privilege [data-game-minutes-field] {
+  display: none;
+}
+
+.product-setting .danger-quiet {
+  flex: 0 0 auto;
+  width: 39px;
+  height: 39px;
+  padding: 0;
 }
 
 .form-actions {
@@ -4717,6 +4773,129 @@ textarea {
 
 .app-dialog.course-import-preview-modal {
   width: min(960px, calc(100% - 30px));
+}
+
+.app-dialog.guide-modal {
+  width: min(860px, calc(100% - 30px));
+}
+
+.guide-heading {
+  margin-bottom: 20px;
+}
+
+.guide-highlight {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 17px 18px;
+  border: 1px solid color-mix(in srgb, var(--teal) 18%, var(--line-soft));
+  border-radius: 17px;
+  background: var(--teal-pale);
+}
+
+.guide-highlight > span {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: var(--teal);
+  color: white;
+}
+
+.guide-highlight strong {
+  display: block;
+  color: var(--teal-deep);
+  font-size: 13px;
+}
+
+.guide-highlight p {
+  margin: 3px 0 0;
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.guide-steps {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 11px;
+  margin-top: 16px;
+}
+
+.guide-step {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--line-soft);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.guide-step-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: var(--paper-deep);
+  color: var(--teal);
+}
+
+.guide-step small {
+  color: var(--amber);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.guide-step h3 {
+  margin: 3px 0 5px;
+  font-size: 14px;
+}
+
+.guide-step p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+.guide-data-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 15px;
+  background: var(--paper-deep);
+}
+
+.guide-data-note > .icon {
+  width: 18px;
+  height: 18px;
+  color: var(--teal);
+}
+
+.guide-data-note p {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+}
+
+.guide-data-note strong {
+  font-size: 11px;
+}
+
+.guide-data-note span {
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.guide-actions {
+  margin-top: 18px;
 }
 
 .course-import-local {
@@ -5905,12 +6084,17 @@ textarea {
     grid-template-columns: 1fr;
   }
 
-  .product-setting {
-    grid-template-columns: 1fr 90px;
+  .product-settings-heading {
+    align-items: stretch;
+    flex-direction: column;
   }
 
-  .product-setting-name {
-    grid-column: 1 / -1;
+  .product-settings-heading .button {
+    width: 100%;
+  }
+
+  .product-setting-grid {
+    grid-template-columns: 1fr 1fr;
   }
 
   .approval-row {
@@ -6013,7 +6197,8 @@ textarea {
   }
 
   .day-period-view {
-    grid-template-columns: repeat(3, 218px);
+    grid-template-columns: 1fr;
+    overflow: visible;
     padding-right: 15px;
     padding-left: 15px;
   }
@@ -6096,10 +6281,19 @@ html[data-mobile-layout="true"] .topbar-actions {
 }
 
 html[data-mobile-layout="true"] .layout-mode-toggle,
+html[data-mobile-layout="true"] .guide-entry,
 html[data-mobile-layout="true"] .parent-entry,
 html[data-mobile-layout="true"] .star-balance {
   min-height: 40px;
   padding: 7px 10px;
+}
+
+html[data-mobile-layout="true"] .guide-steps {
+  grid-template-columns: 1fr;
+}
+
+html[data-mobile-layout="true"] .guide-dialog {
+  padding: 20px;
 }
 
 html[data-mobile-layout="true"] .page-heading {
@@ -6285,17 +6479,15 @@ html[data-mobile-layout="true"] .legend-tip {
 }
 
 html[data-mobile-layout="true"] .day-period-view {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 10px;
-  overflow-x: auto;
+  overflow: visible;
   padding: 0 13px 18px;
-  scroll-padding-left: 13px;
-  scroll-snap-type: x proximity;
 }
 
 html[data-mobile-layout="true"] .day-period-section {
-  flex: 0 0 min(82vw, 325px);
-  scroll-snap-align: start;
+  min-width: 0;
 }
 
 html[data-mobile-layout="true"] .day-period-calendar,
@@ -6392,6 +6584,19 @@ html[data-mobile-layout="true"] .dialog-fields-grid {
   grid-template-columns: 1fr;
 }
 
+html[data-mobile-layout="true"] .product-settings-heading {
+  align-items: stretch;
+  flex-direction: column;
+}
+
+html[data-mobile-layout="true"] .product-settings-heading .button {
+  width: 100%;
+}
+
+html[data-mobile-layout="true"] .product-setting-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
 html[data-mobile-layout="true"] .reward-control-panel {
   grid-template-columns: auto minmax(0, 1fr);
   padding: 19px;
@@ -6462,6 +6667,23 @@ html[data-mobile-layout="true"] .feedback-draft {
 
 html[data-mobile-layout="true"] .course-draft-grid {
   grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 380px) {
+  html[data-mobile-layout="true"] .layout-mode-toggle span,
+  html[data-mobile-layout="true"] .guide-entry span {
+    display: none;
+  }
+
+  html[data-mobile-layout="true"] .layout-mode-toggle,
+  html[data-mobile-layout="true"] .guide-entry {
+    width: 40px;
+    padding: 0;
+  }
+
+  html[data-mobile-layout="true"] .product-setting-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

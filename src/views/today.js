@@ -8,10 +8,10 @@ import {
   TASK_TYPES,
   elapsedMs,
   resolveTaskSubject,
-} from "../services/task-rules.js?v=1.11.0";
-import { escapeHtml, icon, statusPill } from "../ui/html.js?v=1.11.0";
-import { todayFeedbackHtml } from "./teacher-import.js?v=1.11.0";
-import { FEATURES } from "../config/features.js?v=1.11.0";
+} from "../services/task-rules.js?v=1.12.0";
+import { escapeHtml, icon, statusPill } from "../ui/html.js?v=1.12.0";
+import { todayFeedbackHtml } from "./teacher-import.js?v=1.12.0";
+import { FEATURES } from "../config/features.js?v=1.12.0";
 
 function liveTimer(task) {
   if (task.status !== "inProgress") return "";

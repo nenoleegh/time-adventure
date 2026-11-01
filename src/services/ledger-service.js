@@ -1,4 +1,4 @@
-import { getAll, putRecord } from "./db.js?v=1.11.0";
+import { getAll, putRecord } from "./db.js?v=1.12.0";
 import { makeId } from "../utils/id.js";
 import {
   hasEntry,
@@ -6,9 +6,9 @@ import {
   reflectionKey,
   rewardKey,
 } from "./ledger-rules.js";
-import { getSettings } from "./settings-service.js?v=1.11.0";
-import { rewardBudgetUsed } from "./reward-rules.js?v=1.11.0";
-import { FEATURES } from "../config/features.js?v=1.11.0";
+import { getSettings } from "./settings-service.js?v=1.12.0";
+import { rewardBudgetUsed } from "./reward-rules.js?v=1.12.0";
+import { FEATURES } from "../config/features.js?v=1.12.0";
 
 export async function getLedger() {
   const entries = await getAll("ledger");

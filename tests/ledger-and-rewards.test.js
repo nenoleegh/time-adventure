@@ -125,3 +125,30 @@ test("settings validation rejects invalid values", () => {
   });
   assert.ok(errors.length >= 4);
 });
+
+test("custom rewards support privileged activities and validate their fields", () => {
+  const custom = {
+    id: "custom_movie",
+    title: "周末选一部电影",
+    description: "全家一起看",
+    kind: "privilege",
+    period: "week",
+    minuteValue: 0,
+    cost: 15,
+    limit: 1,
+  };
+  assert.deepEqual(
+    validateRewardSettings({
+      ...DEFAULT_SETTINGS,
+      products: [custom],
+    }),
+    [],
+  );
+  assert.match(
+    validateRewardSettings({
+      ...DEFAULT_SETTINGS,
+      products: [{ ...custom, kind: "game", minuteValue: 0 }],
+    })[0],
+    /1 至 240 分钟/,
+  );
+});

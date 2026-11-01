@@ -4,11 +4,11 @@ import {
   openDatabase,
   putMany,
   transactionDone,
-} from "./db.js?v=1.11.0";
+} from "./db.js?v=1.12.0";
 import { makeId } from "../utils/id.js";
 import { dateKey } from "../utils/date.js";
-import { detectSubject, normalizeEstimate } from "./task-rules.js?v=1.11.0";
-import { parseTeacherMessage } from "./teacher-import-rules.js?v=1.11.0";
+import { detectSubject, normalizeEstimate } from "./task-rules.js?v=1.12.0";
+import { parseTeacherMessage } from "./teacher-import-rules.js?v=1.12.0";
 
 const FEEDBACK_BACKFILL_VERSION = 3;
 

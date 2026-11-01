@@ -1,5 +1,5 @@
 import { addDays, dateKey, parseDateKey } from "../utils/date.js";
-import { detectSubject } from "./task-rules.js?v=1.11.0";
+import { detectSubject } from "./task-rules.js?v=1.12.0";
 
 export const DEFAULT_IMPORT_SETTINGS = {
   identifiers: [],
@@ -52,7 +52,7 @@ const WEEKDAY_NUMBER = {
 };
 
 const TASK_CUES =
-  /作业|练习册|练习卷|练习|习题|口算|计算|练计算|每日一题|背诵|背书本|背课文|背书|默写|家默|听写|单词|词语|预习|复习|抄写|阅读|作文|试卷|卷子|手抄报|读书|朗读|读课文|整理错题|订正|启智|仿照|画图|写自己|(?:^|[，；\s])完成|准备/;
+  /作业|练习册|练习卷|练习|习题|口算|计算|练计算|每日一题|背诵|背书本|背课文|背书|默写|家默|听写|单词|词语|预习|复习|抄写|阅读|作文|试卷|卷子|手抄报|读书|朗读|读课文|整理错题|订正|修改|启智|仿照|画图|写自己|数学书|语文书|英语书|(?:^|[，；\s])完成|准备/;
 const FEEDBACK_CUES =
   /完成情况|学习情况|表现|反馈|表扬|批评|全对|满分|优秀|进步|学霸|之星|未交|缺交|补交|未完成|未按时|不合格|错误较多|错题|未订正|没订正|没有订正|需加强|迟到/;
 
@@ -246,7 +246,7 @@ function detectSection(rawLine, today) {
 function cleanLine(value) {
   return value
     .replace(/[\u0000-\u001f\u007f-\u009f]/g, "")
-    .replace(/^[\s>*•·\-–—]+/, "")
+    .replace(/^[\s>*•·\-–—✅✔☑️]+/u, "")
     .replace(/^\d+[.、．)）]\s*/, "")
     .replace(/^[（(]\d+[)）]\s*/, "")
     .trim();
@@ -326,7 +326,10 @@ function conciseFeedback(text, matchedIdentifiers) {
   const divider = cleaned.search(/[：:]/);
   if (divider > 0) {
     const label = cleaned.slice(0, divider).trim();
-    const cleanLabel = label.replace(/(\d+人)\d$/, "$1");
+    const cleanLabel = label
+      .replace(/\[emoji\]/gi, "")
+      .replace(/🆗/g, "完成")
+      .replace(/(\d+人)\d$/, "$1");
     const detail = cleaned.slice(divider + 1).trim();
     const listLike = detail.split(/[、,，.．]/).filter(Boolean).length >= 3;
     if (listLike) {
@@ -345,6 +348,7 @@ function conciseFeedback(text, matchedIdentifiers) {
   }
 
   cleaned = cleaned
+    .replace(/\[emoji\]/gi, "")
     .replace(/[（(]\s*(?:\d{1,3}\s*[、,，.．]\s*)+/g, "")
     .replace(/[）)]/g, "")
     .replace(/(?:\d{1,3}[.、．]\s*){3,}\d{1,3}/g, "名单中的孩子")
@@ -427,7 +431,10 @@ function splitTaskClauses(text) {
         /^(?:请|先)?(?:预习|复习|订正|补完|完成|背诵|背|默写|家默|听写|朗读|阅读|抄写|练计算|练习|做|根据)/.test(
           current.trim(),
         );
-      if (startsNewAction && currentHasAction) {
+      const continuesReadingTask =
+        /^(?:请|先)?(?:阅读|朗读|背诵)/.test(current.trim()) &&
+        /^(?:完成|读完|背完)(?:一篇|一页|一章|一次|一段)/.test(rest.trim());
+      if (startsNewAction && currentHasAction && !continuesReadingTask) {
         clauses.push(current.trim());
         current = "";
         continue;

@@ -82,6 +82,23 @@ export function validateRewardSettings(settings) {
     if (!product.id || productIds.has(product.id)) errors.push("奖励商品编号不能重复。");
     productIds.add(product.id);
     if (!product.title?.trim()) errors.push("奖励商品需要有名称。");
+    if (!["game", "privilege"].includes(product.kind)) {
+      errors.push("奖励类型需要是游戏时间或家庭特权。");
+    }
+    if (!["day", "week"].includes(product.period)) {
+      errors.push("奖励兑换周期需要是每天或每周。");
+    }
+    if (
+      product.kind === "game" &&
+      (!Number.isInteger(product.minuteValue) ||
+        product.minuteValue < 1 ||
+        product.minuteValue > 240)
+    ) {
+      errors.push("游戏时间奖励需要设置 1 至 240 分钟的时长。");
+    }
+    if (product.kind === "privilege" && Number(product.minuteValue) !== 0) {
+      errors.push("家庭特权奖励的游戏时长需要为 0。");
+    }
     if (!Number.isInteger(product.cost) || product.cost < 1) errors.push("兑换价格需要是正整数。");
     if (!Number.isInteger(product.limit) || product.limit < 1) errors.push("兑换上限需要是正整数。");
   }

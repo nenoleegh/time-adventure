@@ -1,10 +1,10 @@
 import {
   DEFAULT_IMPORT_SETTINGS,
-} from "../services/teacher-import-rules.js?v=1.11.0";
+} from "../services/teacher-import-rules.js?v=1.12.0";
 import { formatDateCN, parseDateKey } from "../utils/date.js";
 import { escapeAttr, escapeHtml, icon } from "../ui/html.js";
-import { FEATURES } from "../config/features.js?v=1.11.0";
-import { SUBJECT_OPTIONS } from "../services/task-rules.js?v=1.11.0";
+import { FEATURES } from "../config/features.js?v=1.12.0";
+import { SUBJECT_OPTIONS } from "../services/task-rules.js?v=1.12.0";
 
 function heading(eyebrow, title, description = "") {
   return `

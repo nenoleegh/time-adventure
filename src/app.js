@@ -4,19 +4,19 @@ import {
   formatDateCN,
   formatMinutes,
   weekKey,
-} from "./utils/date.js?v=1.11.0";
+} from "./utils/date.js?v=1.12.0";
 import {
   DEFAULT_PRODUCTS,
   validateRewardSettings,
-} from "./services/reward-rules.js?v=1.11.0";
+} from "./services/reward-rules.js?v=1.12.0";
 import {
   getSettings,
   getSettingHistory,
   saveSettings,
   setParentPin,
   verifyParentPin,
-} from "./services/settings-service.js?v=1.11.0";
-import { getAll, exportDatabase, importDatabase } from "./services/db.js?v=1.11.0";
+} from "./services/settings-service.js?v=1.12.0";
+import { getAll, exportDatabase, importDatabase } from "./services/db.js?v=1.12.0";
 import {
   createTask,
   deleteTask,
@@ -32,8 +32,8 @@ import {
   updateTask,
   backfillTaskSubjects,
   markTaskReminderShown,
-} from "./services/task-service.js?v=1.11.0";
-import { getLedger } from "./services/ledger-service.js?v=1.11.0";
+} from "./services/task-service.js?v=1.12.0";
+import { getLedger } from "./services/ledger-service.js?v=1.12.0";
 import {
   cancelRedemption,
   approveRedemption,
@@ -41,40 +41,45 @@ import {
   markRedeemed,
   rejectRedemption,
   requestRedemption,
-} from "./services/redemption-service.js?v=1.11.0";
-import { getReflection, saveReflection } from "./services/reflection-service.js?v=1.11.0";
+} from "./services/redemption-service.js?v=1.12.0";
+import { getReflection, saveReflection } from "./services/reflection-service.js?v=1.12.0";
 import {
   estimateFeedback,
   elapsedMs,
   resolveTaskSubject,
   SUBJECT_OPTIONS,
   TASK_TYPES,
-} from "./services/task-rules.js?v=1.11.0";
-import { ledgerBalance } from "./services/ledger-rules.js?v=1.11.0";
-import { todayView } from "./views/today.js?v=1.11.0";
-import { planView } from "./views/plan.js?v=1.11.0";
-import { rewardsView } from "./views/rewards.js?v=1.11.0";
-import { growthView } from "./views/growth.js?v=1.11.0";
-import { parentView } from "./views/parent.js?v=1.11.0";
-import { escapeHtml, icon } from "./ui/html.js?v=1.11.0";
-import { validatePin } from "./utils/pin.js?v=1.11.0";
+} from "./services/task-rules.js?v=1.12.0";
+import { ledgerBalance } from "./services/ledger-rules.js?v=1.12.0";
+import { todayView } from "./views/today.js?v=1.12.0";
+import { planView } from "./views/plan.js?v=1.12.0";
+import { rewardsView } from "./views/rewards.js?v=1.12.0";
+import { growthView } from "./views/growth.js?v=1.12.0";
+import {
+  parentView,
+  rewardProductFieldsHtml,
+} from "./views/parent.js?v=1.12.0";
+import { helpDialogHtml } from "./views/help.js?v=1.12.0";
+import { escapeHtml, icon } from "./ui/html.js?v=1.12.0";
+import { validatePin } from "./utils/pin.js?v=1.12.0";
+import { makeId } from "./utils/id.js?v=1.12.0";
 import {
   minutesToTime,
   parseTeacherMessage,
   timeToMinutes,
-} from "./services/teacher-import-rules.js?v=1.11.0";
+} from "./services/teacher-import-rules.js?v=1.12.0";
 import {
   backfillFeedbackSubjects,
   commitTeacherImport,
   getFeedbackForDate,
-} from "./services/teacher-import-service.js?v=1.11.0";
+} from "./services/teacher-import-service.js?v=1.12.0";
 import {
   importEntryDialogHtml,
   importExampleText,
   importPreviewDialogHtml,
   importSettingsDialogHtml,
-} from "./views/teacher-import.js?v=1.11.0";
-import { installTimelineDrag } from "./ui/timeline-drag.js?v=1.11.0";
+} from "./views/teacher-import.js?v=1.12.0";
+import { installTimelineDrag } from "./ui/timeline-drag.js?v=1.12.0";
 import {
   buildCourseOccurrences,
   courseHasConflict,
@@ -82,39 +87,39 @@ import {
   markCourseDuplicates,
   parseCourseText,
   parseCourseRows,
-} from "./services/course-schedule-rules.js?v=1.11.0";
+} from "./services/course-schedule-rules.js?v=1.12.0";
 import {
   deleteCourseTemplate,
   getCourseTemplates,
   saveCourseTemplates,
-} from "./services/course-schedule-service.js?v=1.11.0";
+} from "./services/course-schedule-service.js?v=1.12.0";
 import {
   COURSE_EXAMPLE,
   courseImportEntryHtml,
   courseImportPreviewHtml,
   courseManagerHtml,
   deleteCourseDialogHtml,
-} from "./views/course-import.js?v=1.11.0";
+} from "./views/course-import.js?v=1.12.0";
 import {
   parseDelimitedText,
   readCourseSpreadsheet,
   rowsToTsv,
-} from "./services/table-file.js?v=1.11.0";
+} from "./services/table-file.js?v=1.12.0";
 import {
   applyFeatureSettings,
   FEATURES,
-} from "./config/features.js?v=1.11.0";
+} from "./config/features.js?v=1.12.0";
 import {
   DEFAULT_THEME_ID,
   normalizeThemeId,
   THEME_OPTIONS,
-} from "./config/themes.js?v=1.11.0";
+} from "./config/themes.js?v=1.12.0";
 import {
   buildTaskCalendarIcs,
   calendarFileName,
   findDueTaskReminder,
   reminderKey,
-} from "./services/reminder-rules.js?v=1.11.0";
+} from "./services/reminder-rules.js?v=1.12.0";
 import {
   careForPet,
   awardPetPointsForTask,
@@ -125,13 +130,13 @@ import {
   reAdoptPet,
   tapPetEgg,
   treatPet,
-} from "./services/pet-service.js?v=1.11.0";
-import { petView } from "./views/pet.js?v=1.11.0";
+} from "./services/pet-service.js?v=1.12.0";
+import { petView } from "./views/pet.js?v=1.12.0";
 import {
   PET_CARE_ACTIONS,
   PET_CARE_COSTS,
   petVisualState,
-} from "./services/pet-rules.js?v=1.11.0";
+} from "./services/pet-rules.js?v=1.12.0";
 
 const ALL_ROUTES = [
   { id: "today", label: "今天", icon: "today" },
@@ -193,6 +198,7 @@ let petIdleTimer;
 let petIdleClearTimer;
 let lastPetIdleAction = "";
 const MOBILE_LAYOUT_KEY = "time-adventure-layout-v2";
+const GUIDE_SEEN_KEY = "time-adventure-guide-seen-v1";
 const portraitPhoneQuery = window.matchMedia(
   "(max-width: 760px) and (orientation: portrait)",
 );
@@ -209,6 +215,7 @@ function readStoredLayout() {
 const storedLayout = readStoredLayout();
 let layoutPreferenceLocked = Boolean(storedLayout);
 let layoutMode = storedLayout || (portraitPhoneQuery.matches ? "mobile" : "desktop");
+let guideSeenThisSession = false;
 
 function applyLayoutMode(mode, { persist = false } = {}) {
   layoutMode = mode === "mobile" ? "mobile" : "desktop";
@@ -454,6 +461,9 @@ function appShell() {
             ${icon("phone")}
             <span>${mobileLayout ? "详细版" : "简洁版"}</span>
           </button>
+          <button class="guide-entry" data-action="open-guide" aria-label="打开使用说明" title="使用说明">
+            ${icon("help")}<span>说明</span>
+          </button>
           ${FEATURES.rewards
             ? `<button class="star-balance" data-route="rewards">${icon("spark")}<strong>${balance}</strong><span>星能</span></button>`
             : `<button class="parent-entry" data-action="open-parent">${icon("lock")}家长</button>`}
@@ -501,9 +511,11 @@ function showToast(message, tone = "default") {
 }
 
 function closeDialog() {
+  const guideWasOpen = dialog.classList.contains("guide-modal");
   if (dialog.classList.contains("reminder-modal")) reminderShowing = false;
   if (dialog.open) dialog.close();
   dialog.innerHTML = "";
+  if (guideWasOpen) markGuideSeen();
 }
 
 function openDialog(content, className = "") {
@@ -512,6 +524,33 @@ function openDialog(content, className = "") {
   if (!dialog.open) dialog.showModal();
   const focusTarget = dialog.querySelector("input, textarea, button");
   window.setTimeout(() => focusTarget?.focus(), 60);
+}
+
+function hasSeenGuide() {
+  if (guideSeenThisSession) return true;
+  try {
+    return localStorage.getItem(GUIDE_SEEN_KEY) === "true";
+  } catch {
+    return false;
+  }
+}
+
+function markGuideSeen() {
+  guideSeenThisSession = true;
+  try {
+    localStorage.setItem(GUIDE_SEEN_KEY, "true");
+  } catch {
+    // Keep the in-memory flag so the guide does not reopen this session.
+  }
+}
+
+function openGuideDialog({ firstRun = false } = {}) {
+  openDialog(helpDialogHtml({ firstRun }), "guide-modal");
+}
+
+function maybeOpenFirstRunGuide() {
+  if (hasSeenGuide()) return;
+  window.setTimeout(() => openGuideDialog({ firstRun: true }), 120);
 }
 
 function modalHeader(eyebrow, title, description = "") {
@@ -934,6 +973,12 @@ async function handleAction(action, element) {
   const id = element.dataset.id;
   try {
     if (action === "close-dialog") return closeDialog();
+    if (action === "open-guide") return openGuideDialog();
+    if (action === "finish-guide") {
+      closeDialog();
+      showToast("使用说明已关闭，可以开始安排今天了。");
+      return;
+    }
     if (action === "retry-load") {
       state.loading = true;
       render();
@@ -1221,6 +1266,29 @@ async function handleAction(action, element) {
       return;
     }
     if (action === "change-parent-pin") return changeParentPinDialog();
+    if (action === "add-reward-product") {
+      const list = dialog.querySelector(".product-settings-list");
+      if (!list) return;
+      list.insertAdjacentHTML(
+        "beforeend",
+        rewardProductFieldsHtml({
+          id: makeId("reward"),
+          title: "",
+          description: "",
+          kind: "privilege",
+          period: "week",
+          minuteValue: 0,
+          cost: 10,
+          limit: 1,
+        }),
+      );
+      list.lastElementChild?.querySelector("[data-product-title]")?.focus();
+      return;
+    }
+    if (action === "remove-reward-product") {
+      element.closest(".product-setting")?.remove();
+      return;
+    }
     if (action === "toggle-rewards") {
       const rewardsEnabled = !Boolean(state.settings.rewardsEnabled);
       setBusy(true);
@@ -1678,11 +1746,35 @@ async function handleSubmit(event) {
       await afterMutation("已说明原因，星能已经退回。");
     }
     if (form.id === "parent-settings-form") {
-      const products = state.settings.products.map((product) => ({
-        ...product,
-        cost: Number(formData.get(`product-cost-${product.id}`)),
-        limit: Number(formData.get(`product-limit-${product.id}`)),
-      }));
+      const products = Array.from(
+        form.querySelectorAll(".product-setting"),
+        (row) => {
+          const kind =
+            row.querySelector("[data-product-kind]")?.value === "game"
+              ? "game"
+              : "privilege";
+          return {
+            id: row.dataset.productId || makeId("reward"),
+            title: String(
+              row.querySelector("[data-product-title]")?.value || "",
+            ).trim(),
+            description: String(
+              row.querySelector("[data-product-description]")?.value || "",
+            ).trim(),
+            kind,
+            period:
+              row.querySelector("[data-product-period]")?.value === "week"
+                ? "week"
+                : "day",
+            minuteValue:
+              kind === "game"
+                ? Number(row.querySelector("[data-product-minutes]")?.value)
+                : 0,
+            cost: Number(row.querySelector("[data-product-cost]")?.value),
+            limit: Number(row.querySelector("[data-product-limit]")?.value),
+          };
+        },
+      );
       const next = {
         ...state.settings,
         baseGameMinutes: Number(formData.get("baseGameMinutes")),
@@ -1852,6 +1944,24 @@ document.addEventListener("keydown", (event) => {
 });
 
 document.addEventListener("change", async (event) => {
+  const productKind = event.target.closest?.("[data-product-kind]");
+  if (productKind) {
+    const row = productKind.closest(".product-setting");
+    const gameMinutes = row?.querySelector("[data-product-minutes]");
+    const isPrivilege = productKind.value === "privilege";
+    row?.classList.toggle("is-privilege", isPrivilege);
+    if (gameMinutes) {
+      gameMinutes.disabled = isPrivilege;
+      if (isPrivilege) gameMinutes.value = "0";
+    }
+  }
+  const productPeriod = event.target.closest?.("[data-product-period]");
+  if (productPeriod) {
+    const label = productPeriod
+      .closest(".product-setting")
+      ?.querySelector("[data-limit-label]");
+    if (label) label.textContent = productPeriod.value === "week" ? "每周上限" : "每日上限";
+  }
   if (event.target.id === "plan-date") {
     state.planDay = event.target.value || dateKey();
     state.planTasks = await getTasksForDate(state.planDay);
@@ -1932,6 +2042,7 @@ async function boot() {
     await backfillPetPointsForCompletedTasks().catch(() => 0);
     await refresh();
     render();
+    maybeOpenFirstRunGuide();
     schedulePetIdle(7000);
     setInterval(tickTimers, 1000);
     if ("serviceWorker" in navigator && window.isSecureContext) {

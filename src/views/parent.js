@@ -1,7 +1,7 @@
 import { formatDateCN } from "../utils/date.js";
-import { REDEMPTION_STATUSES } from "../services/reward-rules.js?v=1.11.0";
-import { escapeHtml, icon } from "../ui/html.js";
-import { THEME_OPTIONS } from "../config/themes.js?v=1.11.0";
+import { REDEMPTION_STATUSES } from "../services/reward-rules.js?v=1.12.0";
+import { escapeAttr, escapeHtml, icon } from "../ui/html.js";
+import { THEME_OPTIONS } from "../config/themes.js?v=1.12.0";
 
 function requestActions(item) {
   if (item.status === "pending") {
@@ -17,13 +17,51 @@ function requestActions(item) {
   return `<span class="request-state">${REDEMPTION_STATUSES[item.status]}</span>`;
 }
 
-function productFields(product) {
+export function rewardProductFieldsHtml(product) {
+  const kind = product.kind === "game" ? "game" : "privilege";
+  const period = product.period === "week" ? "week" : "day";
   return `
-    <div class="product-setting" data-product-id="${product.id}">
-      <div class="product-setting-name">${escapeHtml(product.title)}</div>
-      <label><span>星能价格</span><input name="product-cost-${product.id}" type="number" min="1" step="1" data-product-cost="${product.id}" value="${product.cost}"></label>
-      <label><span>${product.period === "week" ? "每周" : "每日"}上限</span><input name="product-limit-${product.id}" type="number" min="1" step="1" data-product-limit="${product.id}" value="${product.limit}"></label>
-    </div>`;
+    <article class="product-setting ${kind === "privilege" ? "is-privilege" : ""}" data-product-id="${escapeAttr(product.id)}">
+      <div class="product-setting-head">
+        <label class="product-title-field">
+          <span>奖励内容</span>
+          <input data-product-title maxlength="30" required value="${escapeAttr(product.title)}" placeholder="例如：周末选择一部电影">
+        </label>
+        <button type="button" class="icon-button danger-quiet" data-action="remove-reward-product" title="删除这个奖励项目" aria-label="删除 ${escapeAttr(product.title)}">${icon("close")}</button>
+      </div>
+      <label class="product-description-field">
+        <span>说明</span>
+        <input data-product-description maxlength="100" value="${escapeAttr(product.description || "")}" placeholder="告诉孩子这个奖励代表什么">
+      </label>
+      <div class="product-setting-grid">
+        <label>
+          <span>奖励类型</span>
+          <select data-product-kind>
+            <option value="game" ${kind === "game" ? "selected" : ""}>额外游戏时间</option>
+            <option value="privilege" ${kind === "privilege" ? "selected" : ""}>家庭特权</option>
+          </select>
+        </label>
+        <label>
+          <span>兑换周期</span>
+          <select data-product-period>
+            <option value="day" ${period === "day" ? "selected" : ""}>每天</option>
+            <option value="week" ${period === "week" ? "selected" : ""}>每周</option>
+          </select>
+        </label>
+        <label data-game-minutes-field>
+          <span>游戏时长</span>
+          <div class="input-with-unit"><input data-product-minutes type="number" min="1" max="240" step="1" value="${Number(product.minuteValue) || 15}" ${kind === "privilege" ? "disabled" : ""}><b>分钟</b></div>
+        </label>
+        <label>
+          <span>星能价格</span>
+          <input data-product-cost type="number" min="1" step="1" value="${Number(product.cost) || 10}">
+        </label>
+        <label>
+          <span data-limit-label>${period === "week" ? "每周" : "每日"}上限</span>
+          <input data-product-limit type="number" min="1" step="1" value="${Number(product.limit) || 1}">
+        </label>
+      </div>
+    </article>`;
 }
 
 export function parentView(state) {
@@ -136,12 +174,12 @@ export function parentView(state) {
             <div class="empty-inline">孩子提交兑换后，会在这里出现。拒绝时必须填写具体原因。</div>`}
         </div>
         <p class="fine-print">家长批准和实际兑现分开记录。App 不会自动解锁其他游戏，也不会绕过系统屏幕使用时间设置。</p>
-      </section>
+      </section>` : ""}
 
       <section class="rules-panel">
         <div class="section-title">
           <div><span class="eyebrow">家庭约定</span><h2>奖励与边界</h2></div>
-          <span class="rule-version">修改只影响之后的行为</span>
+          <span class="rule-version">${rewardsEnabled ? "修改只影响之后的行为" : "奖励暂停中，设置会保留"}</span>
         </div>
         <form id="parent-settings-form">
           <div class="settings-grid">
@@ -169,15 +207,21 @@ export function parentView(state) {
             </label>
           </div>
           <div class="product-settings">
-            <div class="subsection-label">兑换项目</div>
-            ${state.settings.products.map(productFields).join("")}
+            <div class="product-settings-heading">
+              <div class="subsection-label">兑换项目</div>
+              <button type="button" class="button outline small" data-action="add-reward-product">${icon("plus")}添加奖励</button>
+            </div>
+            <div class="product-settings-list">
+              ${state.settings.products.map(rewardProductFieldsHtml).join("")}
+            </div>
+            <p class="fine-print">奖励不限于游戏，也可以设置家庭活动、选择权或孩子喜欢的其他约定。删除项目不会删除历史兑换记录。</p>
           </div>
           <div class="form-actions">
             <span class="fine-print">保存后会留下规则版本，历史奖励不会追溯扣除。</span>
             <button class="button primary" type="submit">${icon("check")}保存家庭约定</button>
           </div>
         </form>
-      </section>` : ""}
+      </section>
 
       <section class="shared-panel">
         <div class="section-title">

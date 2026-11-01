@@ -59,6 +59,7 @@ export function icon(name, className = "") {
     filter:
       '<path d="M4 5h16l-6.2 7.2V19l-3.6 2v-8.8L4 5Z"/>',
     shield: '<path d="M12 3 20 6v6c0 5-3.4 8-8 9-4.6-1-8-4-8-9V6l8-3Z"/><path d="m9 12 2 2 4-5"/>',
+    help: '<circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.4 2.4 0 1 1 3.6 2.1c-.9.5-1.4 1-1.4 2M12 17h.01"/>',
     download: '<path d="M12 3v12M7 10l5 5 5-5M5 20h14"/>',
     upload: '<path d="M12 16V4M7 9l5-5 5 5M5 20h14"/>',
     close: '<path d="m6 6 12 12M18 6 6 18"/>',

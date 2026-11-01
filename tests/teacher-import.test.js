@@ -360,6 +360,33 @@ test("numbered emoji subject homework headings start a task section", () => {
   assert.ok(parsed.tasks.every((task) => task.estimatedMinutes === 10));
 });
 
+test("checkmarked revision and textbook homework are not dropped", () => {
+  const parsed = parseTeacherMessage(
+    `语文-钟老师 15:21:46
+今天在校进行了习作批阅与修改，作业为：
+✅ 修改习作四（在校基本完成，回家可以再复盘打磨）
+✅ 预习第15课，根据作业登记表订正作业。
+
+数学-刘老师 17:06:21
+10.31数学
+一、作业
+1.订正错题、练计算（小数除法）
+2.数学书P52-54。
+二、小结
+1.课堂学习了图案设计，完成了数学书P49-50。`,
+    {
+      today: "2026-11-01",
+      settings: realMessageSettings,
+      now: new Date(2026, 10, 1, 18, 0),
+    },
+  );
+  assert.equal(parsed.tasks.length, 5);
+  assert.ok(parsed.tasks.some((task) => task.title === "修改习作四（在校基本完成，回家可以再复盘打磨）"));
+  assert.ok(parsed.tasks.some((task) => task.title === "数学书P52-54" && task.subject === "数学"));
+  assert.ok(parsed.tasks.every((task) => !task.title.startsWith("✅")));
+  assert.equal(parsed.tasks.some((task) => task.title.includes("P49-50")), false);
+});
+
 test("month and day dates near today do not jump to next year", () => {
   assert.equal(inferDueDate("10月23日数学作业", "2026-10-24"), "2026-10-23");
   assert.equal(inferDueDate("1月1日作业", "2026-12-31"), "2027-01-01");
