@@ -10,9 +10,9 @@ import {
   estimateFeedback,
   resolveTaskSubject,
   TASK_TYPES,
-} from "../services/task-rules.js?v=1.12.0";
+} from "../services/task-rules.js?v=1.13.7";
 import { escapeHtml, icon, statusPill } from "../ui/html.js";
-import { scheduleTimelineHtml } from "./schedule-timeline.js?v=1.12.0";
+import { scheduleTimelineHtml } from "./schedule-timeline.js?v=1.13.7";
 import {
   buildCourseOccurrences,
   courseDurationMinutes,

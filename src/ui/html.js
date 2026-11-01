@@ -63,6 +63,7 @@ export function icon(name, className = "") {
     download: '<path d="M12 3v12M7 10l5 5 5-5M5 20h14"/>',
     upload: '<path d="M12 16V4M7 9l5-5 5 5M5 20h14"/>',
     close: '<path d="m6 6 12 12M18 6 6 18"/>',
+    code: '<path d="m8 9-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"/>',
   };
   return `<svg class="icon ${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || ""}</svg>`;
 }

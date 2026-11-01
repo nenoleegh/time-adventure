@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
+  assignTaskLanes,
   isCompletedOnTime,
   scheduleTimelineHtml,
   taskColorClass,
@@ -40,6 +41,43 @@ test("on-time completion compares against the local scheduled end", () => {
 
 test("timeline scale keeps one minute equal to one pixel", () => {
   assert.equal(TIMELINE_PIXELS_PER_MINUTE, 1);
+});
+
+test("day-view tasks alternate lanes within the same hour", () => {
+  const lanes = assignTaskLanes([
+    {
+      id: "task-a",
+      date: "2026-11-01",
+      scheduledStart: "09:00",
+      scheduledEnd: "09:10",
+      sortOrder: 0,
+    },
+    {
+      id: "task-b",
+      date: "2026-11-01",
+      scheduledStart: "09:10",
+      scheduledEnd: "09:20",
+      sortOrder: 1,
+    },
+    {
+      id: "task-c",
+      date: "2026-11-01",
+      scheduledStart: "09:40",
+      scheduledEnd: "09:50",
+      sortOrder: 2,
+    },
+    {
+      id: "task-d",
+      date: "2026-11-01",
+      scheduledStart: "10:00",
+      scheduledEnd: "10:10",
+      sortOrder: 3,
+    },
+  ]);
+  assert.equal(lanes.get("task-a"), 0);
+  assert.equal(lanes.get("task-b"), 1);
+  assert.equal(lanes.get("task-c"), 0);
+  assert.equal(lanes.get("task-d"), 0);
 });
 
 test("automatic break is rendered as a separate, non-draggable timeline block", () => {

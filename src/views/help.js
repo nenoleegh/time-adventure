@@ -1,4 +1,4 @@
-import { icon } from "../ui/html.js?v=1.12.0";
+import { icon } from "../ui/html.js?v=1.13.7";
 
 const guideSteps = [
   {
@@ -41,6 +41,35 @@ export function helpDialogHtml({ firstRun = false } = {}) {
         </div>
         <button type="button" class="dialog-close" data-action="finish-guide" aria-label="关闭使用说明">${icon("close")}</button>
       </div>
+      <div class="guide-project-note">
+        <span class="guide-project-icon">${icon("code")}</span>
+        <div>
+          <span class="eyebrow">关于这个小工具</span>
+          <strong>一位家长为解决孩子作业问题而做的开源项目</strong>
+          <p>它不是一个商业教育平台，而是一个轻量的时间管理小工具。源代码公开在 GitHub，可以查看它是如何工作的。</p>
+          <a
+            class="guide-source-link"
+            href="https://github.com/nenoleegh/time-adventure"
+            target="_blank"
+            rel="noopener noreferrer"
+          >在 GitHub 查看源代码${icon("arrow")}</a>
+        </div>
+      </div>
+      <div class="guide-data-note">
+        ${icon("shield")}
+        <p>
+          <strong>本地保存，不搜集学生数据</strong>
+          <span>这是一个纯静态网页。任务、老师消息、表扬批评、复盘和成长记录都只保存在当前设备的浏览器中；没有账号系统、服务端数据库、广告或统计 SDK，不会上传或搜集任何学生数据。</span>
+          <span>清理 Safari 网站数据可能删除记录，建议家长定期导出 JSON 备份。</span>
+        </p>
+      </div>
+      <div class="guide-disclaimer">
+        ${icon("shield")}
+        <p>
+          <strong>AI 辅助制作，仅供试用</strong>
+          <span>本工具由 AI 工具辅助制作，仅作个人试用，不构成专业教育、医疗或行为干预建议。软件按现状提供，不保证使用结果；请家长根据孩子的实际情况判断，并定期备份重要数据。</span>
+        </p>
+      </div>
       <div class="guide-highlight">
         <span>${icon("spark")}</span>
         <div>
@@ -54,10 +83,6 @@ export function helpDialogHtml({ firstRun = false } = {}) {
             <span class="guide-step-icon">${icon(step.icon)}</span>
             <div><small>0${index + 1}</small><h3>${step.title}</h3><p>${step.text}</p></div>
           </article>`).join("")}
-      </div>
-      <div class="guide-data-note">
-        ${icon("shield")}
-        <p><strong>数据保存在当前浏览器</strong><span>清理 Safari 网站数据可能删除记录，建议家长定期导出 JSON 备份。</span></p>
       </div>
       <div class="guide-actions">
         <button type="button" class="button primary wide" data-action="finish-guide">${icon("check")}${firstRun ? "知道了，开始使用" : "关闭说明"}</button>

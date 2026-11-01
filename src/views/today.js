@@ -8,10 +8,10 @@ import {
   TASK_TYPES,
   elapsedMs,
   resolveTaskSubject,
-} from "../services/task-rules.js?v=1.12.0";
-import { escapeHtml, icon, statusPill } from "../ui/html.js?v=1.12.0";
-import { todayFeedbackHtml } from "./teacher-import.js?v=1.12.0";
-import { FEATURES } from "../config/features.js?v=1.12.0";
+} from "../services/task-rules.js?v=1.13.7";
+import { escapeHtml, icon, statusPill } from "../ui/html.js?v=1.13.7";
+import { todayFeedbackHtml } from "./teacher-import.js?v=1.13.7";
+import { FEATURES } from "../config/features.js?v=1.13.7";
 
 function liveTimer(task) {
   if (task.status !== "inProgress") return "";
@@ -141,6 +141,7 @@ export function todayView(state) {
         <p>${summary.total ? `你已经完成 ${summary.completed} 件事，今天共安排 ${formatMinutes(summary.plannedMinutes)}。` : "把想做的事放进来，留白也属于计划。"}</p>
       </div>
       <div class="heading-actions today-heading-actions">
+        <button class="button outline import-entry-button" data-action="open-parent">${icon("lock")}家长入口</button>
         <button class="button secondary import-entry-button" data-action="open-teacher-import">${icon("upload")}老师消息</button>
         <button class="add-round" data-action="open-add" aria-label="添加任务">${icon("plus")}</button>
       </div>

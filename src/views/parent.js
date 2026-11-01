@@ -1,7 +1,58 @@
 import { formatDateCN } from "../utils/date.js";
-import { REDEMPTION_STATUSES } from "../services/reward-rules.js?v=1.12.0";
+import { REDEMPTION_STATUSES } from "../services/reward-rules.js?v=1.13.7";
 import { escapeAttr, escapeHtml, icon } from "../ui/html.js";
-import { THEME_OPTIONS } from "../config/themes.js?v=1.12.0";
+import { THEME_OPTIONS } from "../config/themes.js?v=1.13.7";
+
+export const REWARD_PRODUCT_TEMPLATES = [
+  {
+    key: "game",
+    label: "游戏",
+    icon: "play",
+    title: "20 分钟游戏时间",
+    description: "完成约定后兑换，不替代系统屏幕使用时间。",
+    kind: "game",
+    period: "day",
+    minuteValue: 20,
+    cost: 20,
+    limit: 1,
+  },
+  {
+    key: "tv",
+    label: "电视",
+    icon: "monitor",
+    title: "30 分钟电视时间",
+    description: "完成约定后兑换，使用前和家长确认想看的节目。",
+    kind: "privilege",
+    period: "day",
+    minuteValue: 0,
+    cost: 20,
+    limit: 1,
+  },
+  {
+    key: "sport",
+    label: "运动",
+    icon: "heart",
+    title: "选择一次家庭运动",
+    description: "从跑步、骑车、球类等活动中选择一项，和家人一起完成。",
+    kind: "privilege",
+    period: "week",
+    minuteValue: 0,
+    cost: 30,
+    limit: 1,
+  },
+  {
+    key: "shopping",
+    label: "购物",
+    icon: "reward",
+    title: "周末选购一件小物",
+    description: "兑换前先约定预算和用途，再去挑选。",
+    kind: "privilege",
+    period: "week",
+    minuteValue: 0,
+    cost: 40,
+    limit: 1,
+  },
+];
 
 function requestActions(item) {
   if (item.status === "pending") {
@@ -105,56 +156,6 @@ export function parentView(state) {
         </button>
       </section>
 
-      <section class="theme-panel">
-        <div class="section-title">
-          <div><span class="eyebrow">孩子的主界面外观</span><h2>选择一个喜欢的时间冒险主题</h2></div>
-          <span class="rule-version">立即生效</span>
-        </div>
-        <div class="theme-choice-grid">
-          ${THEME_OPTIONS.map((theme) => `
-            <button
-              type="button"
-              class="theme-choice ${state.settings.themeId === theme.id ? "selected" : ""}"
-              data-action="select-theme"
-              data-theme="${theme.id}"
-              aria-pressed="${state.settings.themeId === theme.id ? "true" : "false"}"
-            >
-              <span class="theme-preview theme-${theme.id}">
-                ${theme.colors.map((color) => `<i style="--swatch:${color}"></i>`).join("")}
-              </span>
-              <span class="theme-choice-tag">${theme.tag}</span>
-              <span class="theme-choice-copy"><strong>${escapeHtml(theme.name)}</strong><small>${escapeHtml(theme.description)}</small></span>
-              ${state.settings.themeId === theme.id ? `<span class="theme-selected">${icon("check")}当前</span>` : ""}
-            </button>`).join("")}
-        </div>
-      </section>
-
-      <section class="reminder-panel">
-        <div class="section-title">
-          <div>
-            <span class="eyebrow">任务开始提醒</span>
-            <h2>让时间和孩子同时看见下一步</h2>
-          </div>
-          <span class="rule-version">${state.settings.reminderEnabled ? "应用内提醒已开启" : "应用内提醒已关闭"}</span>
-        </div>
-        <form id="reminder-settings-form" class="reminder-settings-form">
-          <label class="reminder-check">
-            <input type="checkbox" name="reminderEnabled" ${state.settings.reminderEnabled ? "checked" : ""}>
-            <span><strong>App 打开时播放提醒</strong><small>到点后显示任务卡片并播放轻提示音，同一开始时间只提醒一次。</small></span>
-          </label>
-          <label class="reminder-lead">
-            <span>提前多久提醒</span>
-            <select name="reminderLeadMinutes">
-              ${[0, 5, 10, 15].map((minutes) => `
-                <option value="${minutes}" ${Number(state.settings.reminderLeadMinutes) === minutes ? "selected" : ""}>${minutes === 0 ? "任务开始时" : `提前 ${minutes} 分钟`}</option>
-              `).join("")}
-            </select>
-          </label>
-          <button class="button primary" type="submit">${icon("check")}保存提醒设置</button>
-        </form>
-        <p class="reminder-boundary">${icon("tablet")}网页关闭后无法自行唤醒 iPad 闹钟。需要后台提醒时，请在任务卡上点“加入日历”，由 iPad 日历负责准时提醒。</p>
-      </section>
-
       ${rewardsEnabled ? `<section class="approval-panel">
         <div class="section-title">
           <div><span class="eyebrow">待处理</span><h2>${pending.length + approved.length ? "需要你确认的兑换" : "目前没有待处理请求"}</h2></div>
@@ -211,6 +212,24 @@ export function parentView(state) {
               <div class="subsection-label">兑换项目</div>
               <button type="button" class="button outline small" data-action="add-reward-product">${icon("plus")}添加奖励</button>
             </div>
+            <div class="reward-template-bar">
+              <div class="reward-template-copy">
+                <strong>快速模板</strong>
+                <span>选一个常见奖励，自动填好后仍可修改</span>
+              </div>
+              <div class="reward-template-options" aria-label="奖励模板">
+                ${REWARD_PRODUCT_TEMPLATES.map((template) => `
+                  <button
+                    type="button"
+                    class="reward-template-button"
+                    data-action="add-reward-template"
+                    data-template="${template.key}"
+                  >
+                    ${icon(template.icon)}
+                    <span>${template.label}</span>
+                  </button>`).join("")}
+              </div>
+            </div>
             <div class="product-settings-list">
               ${state.settings.products.map(rewardProductFieldsHtml).join("")}
             </div>
@@ -221,6 +240,56 @@ export function parentView(state) {
             <button class="button primary" type="submit">${icon("check")}保存家庭约定</button>
           </div>
         </form>
+      </section>
+
+      <section class="reminder-panel">
+        <div class="section-title">
+          <div>
+            <span class="eyebrow">任务开始提醒</span>
+            <h2>让时间和孩子同时看见下一步</h2>
+          </div>
+          <span class="rule-version">${state.settings.reminderEnabled ? "应用内提醒已开启" : "应用内提醒已关闭"}</span>
+        </div>
+        <form id="reminder-settings-form" class="reminder-settings-form">
+          <label class="reminder-check">
+            <input type="checkbox" name="reminderEnabled" ${state.settings.reminderEnabled ? "checked" : ""}>
+            <span><strong>App 打开时播放提醒</strong><small>到点后显示任务卡片并播放轻提示音，同一开始时间只提醒一次。</small></span>
+          </label>
+          <label class="reminder-lead">
+            <span>提前多久提醒</span>
+            <select name="reminderLeadMinutes">
+              ${[0, 5, 10, 15].map((minutes) => `
+                <option value="${minutes}" ${Number(state.settings.reminderLeadMinutes) === minutes ? "selected" : ""}>${minutes === 0 ? "任务开始时" : `提前 ${minutes} 分钟`}</option>
+              `).join("")}
+            </select>
+          </label>
+          <button class="button primary" type="submit">${icon("check")}保存提醒设置</button>
+        </form>
+        <p class="reminder-boundary">${icon("tablet")}网页关闭后无法自行唤醒 iPad 闹钟。需要后台提醒时，请在任务卡上点“加入日历”，由 iPad 日历负责准时提醒。</p>
+      </section>
+
+      <section class="theme-panel">
+        <div class="section-title">
+          <div><span class="eyebrow">孩子的主界面外观</span><h2>选择一个喜欢的时间冒险主题</h2></div>
+          <span class="rule-version">立即生效</span>
+        </div>
+        <div class="theme-choice-grid">
+          ${THEME_OPTIONS.map((theme) => `
+            <button
+              type="button"
+              class="theme-choice ${state.settings.themeId === theme.id ? "selected" : ""}"
+              data-action="select-theme"
+              data-theme="${theme.id}"
+              aria-pressed="${state.settings.themeId === theme.id ? "true" : "false"}"
+            >
+              <span class="theme-preview theme-${theme.id}">
+                ${theme.colors.map((color) => `<i style="--swatch:${color}"></i>`).join("")}
+              </span>
+              <span class="theme-choice-tag">${theme.tag}</span>
+              <span class="theme-choice-copy"><strong>${escapeHtml(theme.name)}</strong><small>${escapeHtml(theme.description)}</small></span>
+              ${state.settings.themeId === theme.id ? `<span class="theme-selected">${icon("check")}当前</span>` : ""}
+            </button>`).join("")}
+        </div>
       </section>
 
       <section class="shared-panel">

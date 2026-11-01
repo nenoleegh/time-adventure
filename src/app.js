@@ -4,19 +4,19 @@ import {
   formatDateCN,
   formatMinutes,
   weekKey,
-} from "./utils/date.js?v=1.12.0";
+} from "./utils/date.js?v=1.13.7";
 import {
   DEFAULT_PRODUCTS,
   validateRewardSettings,
-} from "./services/reward-rules.js?v=1.12.0";
+} from "./services/reward-rules.js?v=1.13.7";
 import {
   getSettings,
   getSettingHistory,
   saveSettings,
   setParentPin,
   verifyParentPin,
-} from "./services/settings-service.js?v=1.12.0";
-import { getAll, exportDatabase, importDatabase } from "./services/db.js?v=1.12.0";
+} from "./services/settings-service.js?v=1.13.7";
+import { getAll, exportDatabase, importDatabase } from "./services/db.js?v=1.13.7";
 import {
   createTask,
   deleteTask,
@@ -32,8 +32,8 @@ import {
   updateTask,
   backfillTaskSubjects,
   markTaskReminderShown,
-} from "./services/task-service.js?v=1.12.0";
-import { getLedger } from "./services/ledger-service.js?v=1.12.0";
+} from "./services/task-service.js?v=1.13.7";
+import { getLedger } from "./services/ledger-service.js?v=1.13.7";
 import {
   cancelRedemption,
   approveRedemption,
@@ -41,45 +41,46 @@ import {
   markRedeemed,
   rejectRedemption,
   requestRedemption,
-} from "./services/redemption-service.js?v=1.12.0";
-import { getReflection, saveReflection } from "./services/reflection-service.js?v=1.12.0";
+} from "./services/redemption-service.js?v=1.13.7";
+import { getReflection, saveReflection } from "./services/reflection-service.js?v=1.13.7";
 import {
   estimateFeedback,
   elapsedMs,
   resolveTaskSubject,
   SUBJECT_OPTIONS,
   TASK_TYPES,
-} from "./services/task-rules.js?v=1.12.0";
-import { ledgerBalance } from "./services/ledger-rules.js?v=1.12.0";
-import { todayView } from "./views/today.js?v=1.12.0";
-import { planView } from "./views/plan.js?v=1.12.0";
-import { rewardsView } from "./views/rewards.js?v=1.12.0";
-import { growthView } from "./views/growth.js?v=1.12.0";
+} from "./services/task-rules.js?v=1.13.7";
+import { ledgerBalance } from "./services/ledger-rules.js?v=1.13.7";
+import { todayView } from "./views/today.js?v=1.13.7";
+import { planView } from "./views/plan.js?v=1.13.7";
+import { rewardsView } from "./views/rewards.js?v=1.13.7";
+import { growthView } from "./views/growth.js?v=1.13.7";
 import {
   parentView,
+  REWARD_PRODUCT_TEMPLATES,
   rewardProductFieldsHtml,
-} from "./views/parent.js?v=1.12.0";
-import { helpDialogHtml } from "./views/help.js?v=1.12.0";
-import { escapeHtml, icon } from "./ui/html.js?v=1.12.0";
-import { validatePin } from "./utils/pin.js?v=1.12.0";
-import { makeId } from "./utils/id.js?v=1.12.0";
+} from "./views/parent.js?v=1.13.7";
+import { helpDialogHtml } from "./views/help.js?v=1.13.7";
+import { escapeHtml, icon } from "./ui/html.js?v=1.13.7";
+import { validatePin } from "./utils/pin.js?v=1.13.7";
+import { makeId } from "./utils/id.js?v=1.13.7";
 import {
   minutesToTime,
   parseTeacherMessage,
   timeToMinutes,
-} from "./services/teacher-import-rules.js?v=1.12.0";
+} from "./services/teacher-import-rules.js?v=1.13.7";
 import {
   backfillFeedbackSubjects,
   commitTeacherImport,
   getFeedbackForDate,
-} from "./services/teacher-import-service.js?v=1.12.0";
+} from "./services/teacher-import-service.js?v=1.13.7";
 import {
   importEntryDialogHtml,
   importExampleText,
   importPreviewDialogHtml,
   importSettingsDialogHtml,
-} from "./views/teacher-import.js?v=1.12.0";
-import { installTimelineDrag } from "./ui/timeline-drag.js?v=1.12.0";
+} from "./views/teacher-import.js?v=1.13.7";
+import { installTimelineDrag } from "./ui/timeline-drag.js?v=1.13.7";
 import {
   buildCourseOccurrences,
   courseHasConflict,
@@ -87,39 +88,39 @@ import {
   markCourseDuplicates,
   parseCourseText,
   parseCourseRows,
-} from "./services/course-schedule-rules.js?v=1.12.0";
+} from "./services/course-schedule-rules.js?v=1.13.7";
 import {
   deleteCourseTemplate,
   getCourseTemplates,
   saveCourseTemplates,
-} from "./services/course-schedule-service.js?v=1.12.0";
+} from "./services/course-schedule-service.js?v=1.13.7";
 import {
   COURSE_EXAMPLE,
   courseImportEntryHtml,
   courseImportPreviewHtml,
   courseManagerHtml,
   deleteCourseDialogHtml,
-} from "./views/course-import.js?v=1.12.0";
+} from "./views/course-import.js?v=1.13.7";
 import {
   parseDelimitedText,
   readCourseSpreadsheet,
   rowsToTsv,
-} from "./services/table-file.js?v=1.12.0";
+} from "./services/table-file.js?v=1.13.7";
 import {
   applyFeatureSettings,
   FEATURES,
-} from "./config/features.js?v=1.12.0";
+} from "./config/features.js?v=1.13.7";
 import {
   DEFAULT_THEME_ID,
   normalizeThemeId,
   THEME_OPTIONS,
-} from "./config/themes.js?v=1.12.0";
+} from "./config/themes.js?v=1.13.7";
 import {
   buildTaskCalendarIcs,
   calendarFileName,
   findDueTaskReminder,
   reminderKey,
-} from "./services/reminder-rules.js?v=1.12.0";
+} from "./services/reminder-rules.js?v=1.13.7";
 import {
   careForPet,
   awardPetPointsForTask,
@@ -130,13 +131,13 @@ import {
   reAdoptPet,
   tapPetEgg,
   treatPet,
-} from "./services/pet-service.js?v=1.12.0";
-import { petView } from "./views/pet.js?v=1.12.0";
+} from "./services/pet-service.js?v=1.13.7";
+import { petView } from "./views/pet.js?v=1.13.7";
 import {
   PET_CARE_ACTIONS,
   PET_CARE_COSTS,
   petVisualState,
-} from "./services/pet-rules.js?v=1.12.0";
+} from "./services/pet-rules.js?v=1.13.7";
 
 const ALL_ROUTES = [
   { id: "today", label: "今天", icon: "today" },
@@ -1267,7 +1268,9 @@ async function handleAction(action, element) {
     }
     if (action === "change-parent-pin") return changeParentPinDialog();
     if (action === "add-reward-product") {
-      const list = dialog.querySelector(".product-settings-list");
+      const list =
+        element.closest("#parent-settings-form")?.querySelector(".product-settings-list") ||
+        document.querySelector(".product-settings-list");
       if (!list) return;
       list.insertAdjacentHTML(
         "beforeend",
@@ -1283,6 +1286,26 @@ async function handleAction(action, element) {
         }),
       );
       list.lastElementChild?.querySelector("[data-product-title]")?.focus();
+      return;
+    }
+    if (action === "add-reward-template") {
+      const list =
+        element.closest("#parent-settings-form")?.querySelector(".product-settings-list") ||
+        document.querySelector(".product-settings-list");
+      const template = REWARD_PRODUCT_TEMPLATES.find(
+        (item) => item.key === element.dataset.template,
+      );
+      if (!list || !template) return;
+      list.insertAdjacentHTML(
+        "beforeend",
+        rewardProductFieldsHtml({
+          ...template,
+          id: makeId("reward"),
+        }),
+      );
+      const row = list.lastElementChild;
+      row?.scrollIntoView({ behavior: "smooth", block: "center" });
+      row?.querySelector("[data-product-title]")?.focus({ preventScroll: true });
       return;
     }
     if (action === "remove-reward-product") {

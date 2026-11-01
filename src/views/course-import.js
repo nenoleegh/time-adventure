@@ -3,7 +3,7 @@ import {
   timeRangeLabel,
   WEEKDAY_OPTIONS,
   weekdayLabel,
-} from "../services/course-schedule-rules.js?v=1.12.0";
+} from "../services/course-schedule-rules.js?v=1.13.7";
 import { formatMinutes } from "../utils/date.js";
 import { escapeAttr, escapeHtml, icon } from "../ui/html.js";
 

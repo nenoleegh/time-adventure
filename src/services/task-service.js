@@ -5,7 +5,7 @@ import {
   getRecord,
   putMany,
   putRecord,
-} from "./db.js?v=1.12.0";
+} from "./db.js?v=1.13.7";
 import { makeId } from "../utils/id.js";
 import { dateKey } from "../utils/date.js";
 import {
@@ -20,13 +20,13 @@ import {
   normalizeActualMinutes,
   scheduledMinutesFitDay,
   shiftConflictingTasks,
-} from "./task-rules.js?v=1.12.0";
-import { awardTask } from "./ledger-service.js?v=1.12.0";
+} from "./task-rules.js?v=1.13.7";
+import { awardTask } from "./ledger-service.js?v=1.13.7";
 import {
   minutesToTime,
   parseTeacherMessage,
   timeToMinutes,
-} from "./teacher-import-rules.js?v=1.12.0";
+} from "./teacher-import-rules.js?v=1.13.7";
 
 export async function getTasksForDate(day) {
   const tasks = await getAllByIndex("tasks", "date", day);

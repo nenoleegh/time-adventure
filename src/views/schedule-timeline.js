@@ -8,7 +8,7 @@ import {
 } from "../utils/date.js";
 import { escapeAttr, escapeHtml, icon } from "../ui/html.js";
 import { buildCourseOccurrences } from "../services/course-schedule-rules.js";
-import { resolveTaskSubject } from "../services/task-rules.js?v=1.12.0";
+import { resolveTaskSubject } from "../services/task-rules.js?v=1.13.7";
 
 export const TIMELINE_START_MINUTES = 6 * 60 + 30;
 export const TIMELINE_END_MINUTES = 23 * 60;
@@ -59,6 +59,46 @@ export function isCompletedOnTime(task) {
   return new Date(task.completedAt).getTime() <= deadline.getTime();
 }
 
+export function assignTaskLanes(tasks) {
+  const lanes = new Map();
+  const sorted = tasks
+    .filter((task) => minutes(task.scheduledStart) !== null && minutes(task.scheduledEnd) !== null)
+    .sort((a, b) => {
+      const startDelta = minutes(a.scheduledStart) - minutes(b.scheduledStart);
+      return startDelta || (a.sortOrder || 0) - (b.sortOrder || 0);
+    });
+  let currentDate = "";
+  let currentHour = null;
+  let sequenceInHour = 0;
+  let laneEnds = [null, null];
+
+  for (const task of sorted) {
+    const start = minutes(task.scheduledStart);
+    const end = minutes(task.scheduledEnd);
+    if (end <= start) continue;
+    if (task.date !== currentDate) {
+      currentDate = task.date;
+      currentHour = null;
+      sequenceInHour = 0;
+      laneEnds = [null, null];
+    }
+    const hour = Math.floor(start / 60);
+    if (hour !== currentHour) {
+      currentHour = hour;
+      sequenceInHour = 0;
+    }
+    const available = [0, 1].filter(
+      (lane) => laneEnds[lane] === null || laneEnds[lane] <= start,
+    );
+    const preferred = sequenceInHour % 2;
+    const lane = available.includes(preferred) ? preferred : available[0] ?? preferred;
+    lanes.set(task.id, lane);
+    laneEnds[lane] = end;
+    sequenceInHour += 1;
+  }
+  return lanes;
+}
+
 function minutes(value) {
   const match = String(value || "").match(/^(\d{1,2}):(\d{2})$/);
   if (!match) return null;
@@ -75,6 +115,7 @@ function blockForTask(
     startBoundary = TIMELINE_START_MINUTES,
     endBoundary = TIMELINE_END_MINUTES,
     percentage = false,
+    lane = null,
   } = {},
 ) {
   const start = minutes(task.scheduledStart);
@@ -94,9 +135,10 @@ function blockForTask(
   const onTime = isCompletedOnTime(task);
   const finished = task.status === "completed";
   const subject = resolveTaskSubject(task);
+  const laneClass = lane === 0 ? "lane-left" : lane === 1 ? "lane-right" : "";
   return `
     <button
-      class="timeline-block ${taskColorClass(task)} status-${task.status} ${compact ? "compact" : ""}"
+      class="timeline-block ${taskColorClass(task)} status-${task.status} ${compact ? "compact" : ""} ${laneClass}"
       style="top:${top}${percentage ? "%" : "px"};height:${height}${percentage ? "%" : "px"}"
       data-action="edit-task"
       data-id="${task.id}"
@@ -246,7 +288,7 @@ function hourLineTicks(startBoundary, endBoundary) {
   return ticks.join("");
 }
 
-function dayPeriodColumn(period, day, tasks, courses, today) {
+function dayPeriodColumn(period, day, tasks, courses, today, laneAssignments) {
   const periodTasks = tasks.filter((task) => task.date === day);
   const blocks = periodTasks
     .map((task) =>
@@ -254,6 +296,7 @@ function dayPeriodColumn(period, day, tasks, courses, today) {
         startBoundary: period.start,
         endBoundary: period.end,
         percentage: true,
+        lane: laneAssignments.get(task.id),
       }),
     )
     .join("");
@@ -302,9 +345,10 @@ function dayPeriodColumn(period, day, tasks, courses, today) {
 }
 
 function threePeriodDay(day, tasks, courses, today) {
+  const laneAssignments = assignTaskLanes(tasks.filter((task) => task.date === day));
   return `
     <div class="day-period-view">
-      ${DAY_PERIODS.map((period) => dayPeriodColumn(period, day, tasks, courses, today)).join("")}
+      ${DAY_PERIODS.map((period) => dayPeriodColumn(period, day, tasks, courses, today, laneAssignments)).join("")}
     </div>`;
 }
 
