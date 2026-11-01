@@ -1,7 +1,7 @@
 import { formatDateCN } from "../utils/date.js";
-import { REDEMPTION_STATUSES } from "../services/reward-rules.js?v=1.10.0";
+import { REDEMPTION_STATUSES } from "../services/reward-rules.js?v=1.11.0";
 import { escapeHtml, icon } from "../ui/html.js";
-import { THEME_OPTIONS } from "../config/themes.js?v=1.10.0";
+import { THEME_OPTIONS } from "../config/themes.js?v=1.11.0";
 
 function requestActions(item) {
   if (item.status === "pending") {

@@ -1,5 +1,5 @@
 import { addDays, dateKey, parseDateKey } from "../utils/date.js";
-import { detectSubject } from "./task-rules.js?v=1.10.0";
+import { detectSubject } from "./task-rules.js?v=1.11.0";
 
 export const DEFAULT_IMPORT_SETTINGS = {
   identifiers: [],

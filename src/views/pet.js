@@ -8,8 +8,8 @@ import {
   PET_WEIGHT,
   PET_MILESTONES,
   petCareAvailability,
-} from "../services/pet-rules.js?v=1.10.0";
-import { escapeHtml, icon } from "../ui/html.js?v=1.10.0";
+} from "../services/pet-rules.js?v=1.11.0";
+import { escapeHtml, icon } from "../ui/html.js?v=1.11.0";
 
 function needBar(label, value, kind) {
   return `
@@ -185,15 +185,15 @@ function healthyScreen(state, profile) {
     state.petAction === "hatch"
       ? `
         <div class="hatch-in-progress">
-          <img class="pet-sprite hatch-baby" src="./assets/dino/dino-baby.png?v=1.10.0" alt="${escapeHtml(profile.name)}刚刚孵化">
+          <img class="pet-sprite hatch-baby" src="./assets/dino/dino-baby.png?v=1.11.0" alt="${escapeHtml(profile.name)}刚刚孵化">
           <span class="hatch-shell shell-left"></span>
           <span class="hatch-shell shell-right"></span>
           <span class="hatch-spark spark-one">✦</span>
           <span class="hatch-spark spark-two">✦</span>
         </div>`
       : spriteState
-        ? `<div class="pet-state-sprite state-${spriteState}" style="--state-sprite:url('/assets/dino/animations/${spriteState}.png?v=1.10.0')"></div>`
-        : `<img class="pet-sprite" src="./assets/dino/dino-baby.png?v=1.10.0" alt="${escapeHtml(profile.name)}，一只像素小恐龙">`;
+        ? `<div class="pet-state-sprite state-${spriteState}" style="--state-sprite:url('/assets/dino/animations/${spriteState}.png?v=1.11.0')"></div>`
+        : `<img class="pet-sprite" src="./assets/dino/dino-baby.png?v=1.11.0" alt="${escapeHtml(profile.name)}，一只像素小恐龙">`;
   const speech =
     state.petAction === "hatch"
       ? `啪嗒！我是${profile.name}，今天出生啦！`

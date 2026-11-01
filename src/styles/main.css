@@ -364,6 +364,32 @@ p {
   gap: 12px;
 }
 
+.layout-mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 42px;
+  padding: 8px 13px;
+  border: 1px solid color-mix(in srgb, var(--teal) 22%, var(--line));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 88%, var(--teal-pale));
+  color: var(--teal-deep);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.layout-mode-toggle .icon {
+  width: 17px;
+  height: 17px;
+}
+
+.layout-mode-toggle[aria-pressed="true"] {
+  border-color: color-mix(in srgb, var(--teal) 45%, var(--line));
+  background: var(--teal-soft);
+}
+
 .star-balance {
   display: flex;
   align-items: baseline;
@@ -5649,6 +5675,8 @@ textarea {
   }
 
   .page-heading {
+    flex-direction: column;
+    align-items: stretch;
     gap: 15px;
   }
 
@@ -5671,6 +5699,12 @@ textarea {
 
   .topbar-actions {
     gap: 6px;
+  }
+
+  .layout-mode-toggle {
+    min-width: 42px;
+    min-height: 40px;
+    padding: 7px 10px;
   }
 
   .progress-foot {
@@ -6016,6 +6050,418 @@ textarea {
     grid-template-columns: 1fr;
     gap: 4px;
   }
+}
+
+html[data-mobile-layout="true"] body {
+  overflow-x: hidden;
+}
+
+html[data-mobile-layout="true"] .app-frame {
+  width: min(calc(100% - 22px), 430px);
+  padding-bottom: calc(108px + var(--safe-bottom));
+}
+
+html[data-mobile-layout="true"] .topbar {
+  grid-template-columns: minmax(0, 1fr) auto;
+  min-height: 78px;
+  gap: 8px;
+}
+
+html[data-mobile-layout="true"] .topbar-center,
+html[data-mobile-layout="true"] .brand small,
+html[data-mobile-layout="true"] .offline-pill {
+  display: none;
+}
+
+html[data-mobile-layout="true"] .brand {
+  min-width: 0;
+  gap: 8px;
+}
+
+html[data-mobile-layout="true"] .brand-mark {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+}
+
+html[data-mobile-layout="true"] .brand strong {
+  overflow: hidden;
+  font-size: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html[data-mobile-layout="true"] .topbar-actions {
+  gap: 6px;
+}
+
+html[data-mobile-layout="true"] .layout-mode-toggle,
+html[data-mobile-layout="true"] .parent-entry,
+html[data-mobile-layout="true"] .star-balance {
+  min-height: 40px;
+  padding: 7px 10px;
+}
+
+html[data-mobile-layout="true"] .page-heading {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 15px;
+  margin: 16px 0 25px;
+}
+
+html[data-mobile-layout="true"] .page-heading > div:first-child {
+  max-width: none;
+}
+
+html[data-mobile-layout="true"] .page-heading h1 {
+  margin-bottom: 8px;
+  font-size: clamp(28px, 9vw, 35px);
+  letter-spacing: -0.045em;
+}
+
+html[data-mobile-layout="true"] .page-heading > div:first-child > p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+html[data-mobile-layout="true"] .heading-actions,
+html[data-mobile-layout="true"] .today-heading-actions {
+  width: 100%;
+  justify-content: flex-start;
+  margin-top: 0;
+}
+
+html[data-mobile-layout="true"] .heading-actions .button,
+html[data-mobile-layout="true"] .heading-actions .parent-entry {
+  min-height: 44px;
+}
+
+html[data-mobile-layout="true"] .import-entry-button {
+  flex: 1;
+}
+
+html[data-mobile-layout="true"] .today-grid,
+html[data-mobile-layout="true"] .reward-layout,
+html[data-mobile-layout="true"] .pet-layout,
+html[data-mobile-layout="true"] .growth-layout,
+html[data-mobile-layout="true"] .parent-grid {
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+html[data-mobile-layout="true"] .today-rail {
+  position: static;
+  grid-template-columns: 1fr;
+  grid-row: 1;
+  gap: 12px;
+}
+
+html[data-mobile-layout="true"] .today-rail > :not(.next-card) {
+  display: none;
+}
+
+html[data-mobile-layout="true"] .next-card {
+  grid-column: 1 / -1;
+  min-height: 245px;
+  padding: 23px;
+}
+
+html[data-mobile-layout="true"] .next-card h2 {
+  font-size: 26px;
+}
+
+html[data-mobile-layout="true"] .progress-card {
+  padding: 20px;
+}
+
+html[data-mobile-layout="true"] .progress-top strong {
+  font-size: 26px;
+}
+
+html[data-mobile-layout="true"] .progress-foot {
+  flex-direction: column;
+  gap: 4px;
+}
+
+html[data-mobile-layout="true"] .section-block {
+  margin-top: 27px;
+}
+
+html[data-mobile-layout="true"] .section-title {
+  align-items: flex-start;
+  gap: 12px;
+}
+
+html[data-mobile-layout="true"] .task-filter-bar {
+  align-items: stretch;
+  flex-direction: column;
+  gap: 9px;
+}
+
+html[data-mobile-layout="true"] .task-filter-options {
+  width: 100%;
+}
+
+html[data-mobile-layout="true"] .task-main {
+  padding: 17px;
+}
+
+html[data-mobile-layout="true"] .task-card h3 {
+  font-size: 18px;
+}
+
+html[data-mobile-layout="true"] .task-actions {
+  flex-wrap: wrap;
+}
+
+html[data-mobile-layout="true"] .task-actions .button {
+  flex: 1;
+  min-height: 44px;
+}
+
+html[data-mobile-layout="true"] .date-strip {
+  gap: 8px;
+}
+
+html[data-mobile-layout="true"] .date-display {
+  min-width: 0;
+  flex: 1;
+}
+
+html[data-mobile-layout="true"] .plan-summary {
+  grid-template-columns: 1fr;
+}
+
+html[data-mobile-layout="true"] .plan-summary > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-right: 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+html[data-mobile-layout="true"] .plan-summary > div:last-child {
+  border-bottom: 0;
+}
+
+html[data-mobile-layout="true"] .plan-panel,
+html[data-mobile-layout="true"] .week-chart-card,
+html[data-mobile-layout="true"] .reflection-card,
+html[data-mobile-layout="true"] .reminder-panel,
+html[data-mobile-layout="true"] .theme-panel {
+  padding: 20px;
+  border-radius: 22px;
+}
+
+html[data-mobile-layout="true"] .plan-task {
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 9px;
+  padding: 16px;
+}
+
+html[data-mobile-layout="true"] .plan-task-tools {
+  grid-column: 2;
+}
+
+html[data-mobile-layout="true"] .timeline-card {
+  border-radius: 22px;
+}
+
+html[data-mobile-layout="true"] .timeline-toolbar {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 18px 12px;
+}
+
+html[data-mobile-layout="true"] .timeline-legend {
+  gap: 7px 12px;
+  padding: 0 18px 14px;
+}
+
+html[data-mobile-layout="true"] .legend-tip {
+  width: 100%;
+  margin-left: 0;
+}
+
+html[data-mobile-layout="true"] .day-period-view {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 0 13px 18px;
+  scroll-padding-left: 13px;
+  scroll-snap-type: x proximity;
+}
+
+html[data-mobile-layout="true"] .day-period-section {
+  flex: 0 0 min(82vw, 325px);
+  scroll-snap-align: start;
+}
+
+html[data-mobile-layout="true"] .day-period-calendar,
+html[data-mobile-layout="true"] .day-period-axis,
+html[data-mobile-layout="true"] .day-period-track {
+  height: 330px;
+}
+
+html[data-mobile-layout="true"] .timeline-scroll {
+  max-height: 62dvh;
+}
+
+html[data-mobile-layout="true"] .unscheduled-panel {
+  grid-template-columns: 1fr;
+  padding: 18px;
+}
+
+html[data-mobile-layout="true"] .unscheduled-help,
+html[data-mobile-layout="true"] .unscheduled-list {
+  grid-column: 1;
+}
+
+html[data-mobile-layout="true"] .pet-scene {
+  height: clamp(330px, 88vw, 400px);
+}
+
+html[data-mobile-layout="true"] .pet-speech {
+  top: 25px;
+  left: 14px;
+  width: min(215px, 63vw);
+  font-size: 9px;
+}
+
+html[data-mobile-layout="true"] .pet-sprite-wrap {
+  width: min(330px, 88%);
+  bottom: 8px;
+}
+
+html[data-mobile-layout="true"] .pet-needs-grid,
+html[data-mobile-layout="true"] .pet-care-grid,
+html[data-mobile-layout="true"] .pet-side-column {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+html[data-mobile-layout="true"] .pet-log-card {
+  grid-column: 1 / -1;
+}
+
+html[data-mobile-layout="true"] .insight-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+html[data-mobile-layout="true"] .insight-card {
+  padding: 17px;
+}
+
+html[data-mobile-layout="true"] .insight-icon {
+  margin-bottom: 14px;
+}
+
+html[data-mobile-layout="true"] .insight-card > strong {
+  font-size: 28px;
+}
+
+html[data-mobile-layout="true"] .reflection-heading,
+html[data-mobile-layout="true"] .reflection-footer,
+html[data-mobile-layout="true"] .form-actions,
+html[data-mobile-layout="true"] .data-actions {
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+html[data-mobile-layout="true"] .reflection-footer .button,
+html[data-mobile-layout="true"] .form-actions .button,
+html[data-mobile-layout="true"] .data-actions .button {
+  width: 100%;
+}
+
+html[data-mobile-layout="true"] .evidence-strip {
+  grid-template-columns: 1fr 1fr;
+  padding: 19px;
+}
+
+html[data-mobile-layout="true"] .evidence-strip > div:nth-child(3),
+html[data-mobile-layout="true"] .evidence-strip p {
+  grid-column: 1 / -1;
+}
+
+html[data-mobile-layout="true"] .settings-grid,
+html[data-mobile-layout="true"] .theme-choice-grid,
+html[data-mobile-layout="true"] .schedule-settings-grid,
+html[data-mobile-layout="true"] .dialog-fields-grid {
+  grid-template-columns: 1fr;
+}
+
+html[data-mobile-layout="true"] .reward-control-panel {
+  grid-template-columns: auto minmax(0, 1fr);
+  padding: 19px;
+}
+
+html[data-mobile-layout="true"] .feature-switch {
+  grid-column: 1 / -1;
+  width: 100%;
+  justify-content: space-between;
+  padding: 9px 4px 0;
+  border-top: 1px solid var(--line-soft);
+}
+
+html[data-mobile-layout="true"] .bottom-nav {
+  bottom: calc(8px + var(--safe-bottom));
+  width: min(430px, calc(100% - 16px));
+  grid-template-columns: repeat(var(--nav-count, 4), 1fr);
+  border-radius: 22px;
+}
+
+html[data-mobile-layout="true"] .nav-item {
+  min-height: 52px;
+  padding: 6px;
+}
+
+html[data-mobile-layout="true"] .app-dialog {
+  width: min(440px, calc(100% - 16px));
+  max-height: calc(100dvh - 24px);
+  border-radius: 22px;
+}
+
+html[data-mobile-layout="true"] .dialog-form,
+html[data-mobile-layout="true"] .task-menu-dialog {
+  padding: 20px;
+}
+
+html[data-mobile-layout="true"] .dialog-actions {
+  flex-wrap: wrap;
+}
+
+html[data-mobile-layout="true"] .dialog-actions .button {
+  flex: 1;
+  min-width: 130px;
+}
+
+html[data-mobile-layout="true"] .segmented,
+html[data-mobile-layout="true"] .complete-comparison {
+  grid-template-columns: 1fr;
+}
+
+html[data-mobile-layout="true"] .comparison-arrow {
+  display: none;
+}
+
+html[data-mobile-layout="true"] .message-field textarea {
+  min-height: 180px;
+}
+
+html[data-mobile-layout="true"] .import-draft-row,
+html[data-mobile-layout="true"] .course-draft-row {
+  grid-template-columns: 28px minmax(0, 1fr);
+  padding: 11px;
+}
+
+html[data-mobile-layout="true"] .feedback-draft {
+  grid-template-columns: 1fr;
+}
+
+html[data-mobile-layout="true"] .course-draft-grid {
+  grid-template-columns: 1fr 1fr;
 }
 
 @media (prefers-reduced-motion: reduce) {

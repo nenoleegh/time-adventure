@@ -4,19 +4,19 @@ import {
   formatDateCN,
   formatMinutes,
   weekKey,
-} from "./utils/date.js?v=1.10.0";
+} from "./utils/date.js?v=1.11.0";
 import {
   DEFAULT_PRODUCTS,
   validateRewardSettings,
-} from "./services/reward-rules.js?v=1.10.0";
+} from "./services/reward-rules.js?v=1.11.0";
 import {
   getSettings,
   getSettingHistory,
   saveSettings,
   setParentPin,
   verifyParentPin,
-} from "./services/settings-service.js?v=1.10.0";
-import { getAll, exportDatabase, importDatabase } from "./services/db.js?v=1.10.0";
+} from "./services/settings-service.js?v=1.11.0";
+import { getAll, exportDatabase, importDatabase } from "./services/db.js?v=1.11.0";
 import {
   createTask,
   deleteTask,
@@ -32,8 +32,8 @@ import {
   updateTask,
   backfillTaskSubjects,
   markTaskReminderShown,
-} from "./services/task-service.js?v=1.10.0";
-import { getLedger } from "./services/ledger-service.js?v=1.10.0";
+} from "./services/task-service.js?v=1.11.0";
+import { getLedger } from "./services/ledger-service.js?v=1.11.0";
 import {
   cancelRedemption,
   approveRedemption,
@@ -41,40 +41,40 @@ import {
   markRedeemed,
   rejectRedemption,
   requestRedemption,
-} from "./services/redemption-service.js?v=1.10.0";
-import { getReflection, saveReflection } from "./services/reflection-service.js?v=1.10.0";
+} from "./services/redemption-service.js?v=1.11.0";
+import { getReflection, saveReflection } from "./services/reflection-service.js?v=1.11.0";
 import {
   estimateFeedback,
   elapsedMs,
   resolveTaskSubject,
   SUBJECT_OPTIONS,
   TASK_TYPES,
-} from "./services/task-rules.js?v=1.10.0";
-import { ledgerBalance } from "./services/ledger-rules.js?v=1.10.0";
-import { todayView } from "./views/today.js?v=1.10.0";
-import { planView } from "./views/plan.js?v=1.10.0";
-import { rewardsView } from "./views/rewards.js?v=1.10.0";
-import { growthView } from "./views/growth.js?v=1.10.0";
-import { parentView } from "./views/parent.js?v=1.10.0";
-import { escapeHtml, icon } from "./ui/html.js?v=1.10.0";
-import { validatePin } from "./utils/pin.js?v=1.10.0";
+} from "./services/task-rules.js?v=1.11.0";
+import { ledgerBalance } from "./services/ledger-rules.js?v=1.11.0";
+import { todayView } from "./views/today.js?v=1.11.0";
+import { planView } from "./views/plan.js?v=1.11.0";
+import { rewardsView } from "./views/rewards.js?v=1.11.0";
+import { growthView } from "./views/growth.js?v=1.11.0";
+import { parentView } from "./views/parent.js?v=1.11.0";
+import { escapeHtml, icon } from "./ui/html.js?v=1.11.0";
+import { validatePin } from "./utils/pin.js?v=1.11.0";
 import {
   minutesToTime,
   parseTeacherMessage,
   timeToMinutes,
-} from "./services/teacher-import-rules.js?v=1.10.0";
+} from "./services/teacher-import-rules.js?v=1.11.0";
 import {
   backfillFeedbackSubjects,
   commitTeacherImport,
   getFeedbackForDate,
-} from "./services/teacher-import-service.js?v=1.10.0";
+} from "./services/teacher-import-service.js?v=1.11.0";
 import {
   importEntryDialogHtml,
   importExampleText,
   importPreviewDialogHtml,
   importSettingsDialogHtml,
-} from "./views/teacher-import.js?v=1.10.0";
-import { installTimelineDrag } from "./ui/timeline-drag.js?v=1.10.0";
+} from "./views/teacher-import.js?v=1.11.0";
+import { installTimelineDrag } from "./ui/timeline-drag.js?v=1.11.0";
 import {
   buildCourseOccurrences,
   courseHasConflict,
@@ -82,39 +82,39 @@ import {
   markCourseDuplicates,
   parseCourseText,
   parseCourseRows,
-} from "./services/course-schedule-rules.js?v=1.10.0";
+} from "./services/course-schedule-rules.js?v=1.11.0";
 import {
   deleteCourseTemplate,
   getCourseTemplates,
   saveCourseTemplates,
-} from "./services/course-schedule-service.js?v=1.10.0";
+} from "./services/course-schedule-service.js?v=1.11.0";
 import {
   COURSE_EXAMPLE,
   courseImportEntryHtml,
   courseImportPreviewHtml,
   courseManagerHtml,
   deleteCourseDialogHtml,
-} from "./views/course-import.js?v=1.10.0";
+} from "./views/course-import.js?v=1.11.0";
 import {
   parseDelimitedText,
   readCourseSpreadsheet,
   rowsToTsv,
-} from "./services/table-file.js?v=1.10.0";
+} from "./services/table-file.js?v=1.11.0";
 import {
   applyFeatureSettings,
   FEATURES,
-} from "./config/features.js?v=1.10.0";
+} from "./config/features.js?v=1.11.0";
 import {
   DEFAULT_THEME_ID,
   normalizeThemeId,
   THEME_OPTIONS,
-} from "./config/themes.js?v=1.10.0";
+} from "./config/themes.js?v=1.11.0";
 import {
   buildTaskCalendarIcs,
   calendarFileName,
   findDueTaskReminder,
   reminderKey,
-} from "./services/reminder-rules.js?v=1.10.0";
+} from "./services/reminder-rules.js?v=1.11.0";
 import {
   careForPet,
   awardPetPointsForTask,
@@ -125,13 +125,13 @@ import {
   reAdoptPet,
   tapPetEgg,
   treatPet,
-} from "./services/pet-service.js?v=1.10.0";
-import { petView } from "./views/pet.js?v=1.10.0";
+} from "./services/pet-service.js?v=1.11.0";
+import { petView } from "./views/pet.js?v=1.11.0";
 import {
   PET_CARE_ACTIONS,
   PET_CARE_COSTS,
   petVisualState,
-} from "./services/pet-rules.js?v=1.10.0";
+} from "./services/pet-rules.js?v=1.11.0";
 
 const ALL_ROUTES = [
   { id: "today", label: "今天", icon: "today" },
@@ -192,6 +192,49 @@ let lastPlanRefreshMinute = "";
 let petIdleTimer;
 let petIdleClearTimer;
 let lastPetIdleAction = "";
+const MOBILE_LAYOUT_KEY = "time-adventure-layout-v2";
+const portraitPhoneQuery = window.matchMedia(
+  "(max-width: 760px) and (orientation: portrait)",
+);
+
+function readStoredLayout() {
+  try {
+    const value = localStorage.getItem(MOBILE_LAYOUT_KEY);
+    return ["mobile", "desktop"].includes(value) ? value : null;
+  } catch {
+    return null;
+  }
+}
+
+const storedLayout = readStoredLayout();
+let layoutPreferenceLocked = Boolean(storedLayout);
+let layoutMode = storedLayout || (portraitPhoneQuery.matches ? "mobile" : "desktop");
+
+function applyLayoutMode(mode, { persist = false } = {}) {
+  layoutMode = mode === "mobile" ? "mobile" : "desktop";
+  document.documentElement.dataset.mobileLayout =
+    layoutMode === "mobile" ? "true" : "false";
+  document.documentElement.dataset.layoutMode = layoutMode;
+  const viewport = document.querySelector('meta[name="viewport"]');
+  if (viewport) {
+    viewport.content = "width=device-width, initial-scale=1, viewport-fit=cover";
+  }
+  if (persist) {
+    layoutPreferenceLocked = true;
+    try {
+      localStorage.setItem(MOBILE_LAYOUT_KEY, layoutMode);
+    } catch {
+      // The selected layout still applies for this session.
+    }
+  }
+}
+
+applyLayoutMode(layoutMode);
+portraitPhoneQuery.addEventListener?.("change", (event) => {
+  if (layoutPreferenceLocked) return;
+  applyLayoutMode(event.matches ? "mobile" : "desktop");
+  if (!state.loading) render();
+});
 
 const PET_IDLE_ACTIONS = [
   { id: "walk", duration: 3600 },
@@ -391,6 +434,7 @@ function appShell() {
   }
   const balance = getBalance();
   const routes = enabledRoutes();
+  const mobileLayout = layoutMode === "mobile";
   return `
     <div class="app-frame">
       <header class="topbar">
@@ -400,6 +444,16 @@ function appShell() {
         </button>
         <div class="topbar-center">${formatDateCN(state.today)}</div>
         <div class="topbar-actions">
+          <button
+            class="layout-mode-toggle"
+            data-action="toggle-layout-mode"
+            aria-pressed="${mobileLayout ? "true" : "false"}"
+            aria-label="${mobileLayout ? "切换到详细布局" : "切换到简洁竖屏布局"}"
+            title="${mobileLayout ? "显示今日进度、余额和提醒等更多信息" : "只保留下一步和核心任务"}"
+          >
+            ${icon("phone")}
+            <span>${mobileLayout ? "详细版" : "简洁版"}</span>
+          </button>
           ${FEATURES.rewards
             ? `<button class="star-balance" data-route="rewards">${icon("spark")}<strong>${balance}</strong><span>星能</span></button>`
             : `<button class="parent-entry" data-action="open-parent">${icon("lock")}家长</button>`}
@@ -927,6 +981,13 @@ async function handleAction(action, element) {
     if (action === "filter-today-subject") {
       state.todaySubjectFilter = element.dataset.subject || "全部";
       render();
+      return;
+    }
+    if (action === "toggle-layout-mode") {
+      const next = layoutMode === "mobile" ? "desktop" : "mobile";
+      applyLayoutMode(next, { persist: true });
+      render();
+      showToast(next === "mobile" ? "已切换到简洁竖屏布局。" : "已显示更多今日信息。");
       return;
     }
     if (action === "schedule-task") return scheduleTaskDialog(findTask(id));
