@@ -1,7 +1,7 @@
 import { formatDateCN } from "../utils/date.js";
-import { REDEMPTION_STATUSES } from "../services/reward-rules.js?v=1.13.7";
+import { REDEMPTION_STATUSES } from "../services/reward-rules.js?v=1.13.8";
 import { escapeAttr, escapeHtml, icon } from "../ui/html.js";
-import { THEME_OPTIONS } from "../config/themes.js?v=1.13.7";
+import { THEME_OPTIONS } from "../config/themes.js?v=1.13.8";
 
 export const REWARD_PRODUCT_TEMPLATES = [
   {
@@ -129,7 +129,7 @@ export function parentView(state) {
         <button class="text-button back-button" data-route="${rewardsEnabled ? "rewards" : "today"}">${icon("back")}返回${rewardsEnabled ? "奖励" : "今天"}</button>
         <span class="eyebrow">家长协作区</span>
         <h1>${rewardsEnabled ? "一起约定边界，少做临时拉扯" : "查看隐私边界与备份"}</h1>
-        <p>${rewardsEnabled ? "这里管理规则和兑换状态。" : "奖励模块当前暂停使用，历史账本数据仍然保留。"}家长默认看不到孩子设为私密的复盘。</p>
+        <p>${rewardsEnabled ? "这里管理规则和兑换状态。" : "奖励模块当前暂停使用，历史账本数据仍然保留。"}家长只能看到孩子允许在本设备查看的复盘，其他设备和私密内容不会显示。</p>
       </div>
       <button class="button outline" data-action="lock-parent">${icon("lock")}锁定</button>
     </div>
@@ -294,7 +294,7 @@ export function parentView(state) {
 
       <section class="shared-panel">
         <div class="section-title">
-          <div><span class="eyebrow">孩子愿意分享的复盘</span><h2>看发现，不做评判</h2></div>
+          <div><span class="eyebrow">孩子允许在本设备查看的复盘</span><h2>只看见孩子主动展示的内容</h2></div>
         </div>
         ${sharedReflections.length ? sharedReflections.map((item) => `
           <article class="shared-reflection">
@@ -302,7 +302,7 @@ export function parentView(state) {
             <p><b>最顺的事：</b>${escapeHtml(item.smooth || "没有填写")}</p>
             <p><b>打乱计划的事：</b>${escapeHtml(item.disrupted || "没有填写")}</p>
             <p><b>想做的调整：</b>${escapeHtml(item.adjust || "没有填写")}</p>
-          </article>`).join("") : `<div class="empty-inline">孩子把复盘设为“愿意分享”后才会显示在这里。私密复盘不会出现。</div>`}
+          </article>`).join("") : `<div class="empty-inline">孩子勾选“允许家长在本设备查看”后才会显示在这里。私密复盘和其他设备上的内容都不会出现。</div>`}
       </section>
 
       <section class="data-panel">

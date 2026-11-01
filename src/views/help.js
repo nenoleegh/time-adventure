@@ -1,4 +1,4 @@
-import { icon } from "../ui/html.js?v=1.13.7";
+import { icon } from "../ui/html.js?v=1.13.8";
 
 const guideSteps = [
   {
@@ -24,7 +24,7 @@ const guideSteps = [
   {
     icon: "lock",
     title: "家长设置与备份",
-    text: "家长区可以调整识别关键词、主题、奖励开关，并导出备份。数据默认只保存在当前浏览器。",
+    text: "家长区可以调整识别关键词、主题、奖励开关，并导出备份。复盘只会在同一台设备的家长区按孩子的选择显示，不会同步到家长手机。",
   },
 ];
 

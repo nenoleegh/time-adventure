@@ -4896,6 +4896,10 @@ textarea {
   line-height: 1.55;
 }
 
+.guide-disclaimer + .guide-highlight {
+  margin-top: 16px;
+}
+
 .guide-project-note {
   display: grid;
   grid-template-columns: 42px minmax(0, 1fr);

@@ -78,6 +78,8 @@ test("reward templates cover common family rewards and prefill editable fields",
     assert.match(html, new RegExp(`data-template="${template.key}"`));
   }
   assert.match(html, /data-action="add-reward-template"/);
+  assert.match(html, /孩子允许在本设备查看的复盘/);
+  assert.match(html, /其他设备和私密内容不会显示/);
   assert.ok(html.indexOf("approval-panel") < html.indexOf("rules-panel"));
   assert.ok(html.indexOf("rules-panel") < html.indexOf("reminder-panel"));
   assert.ok(html.indexOf("reminder-panel") < html.indexOf("theme-panel"));

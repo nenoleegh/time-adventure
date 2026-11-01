@@ -1,7 +1,7 @@
 import { formatDateCN, formatMinutes, formatShortDate } from "../utils/date.js";
 import { buildWeeklySummary } from "../services/report-rules.js";
 import { escapeHtml, icon } from "../ui/html.js";
-import { FEATURES } from "../config/features.js?v=1.13.7";
+import { FEATURES } from "../config/features.js?v=1.13.8";
 
 function chart(summary) {
   const max = Math.max(1, ...summary.daily.map((day) => day.total));
@@ -77,7 +77,7 @@ export function growthView(state) {
             <span class="eyebrow">晚间三问 · 3 分钟</span>
             <h2>${formatDateCN(state.today)}，留下一点发现</h2>
           </div>
-          <div class="privacy-chip">${icon(shared ? "people" : "lock")}${shared ? "会分享给家长" : "仅自己可见"}</div>
+          <div class="privacy-chip">${icon(shared ? "people" : "lock")}${shared ? "仅本设备家长区可见" : "仅自己可见"}</div>
         </div>
         <form id="reflection-form">
           <label>
@@ -95,12 +95,12 @@ export function growthView(state) {
           <div class="reflection-footer">
             <label class="visibility-choice">
               <input type="checkbox" name="shared" ${shared ? "checked" : ""}>
-              <span>愿意分享给家长</span>
+              <span>允许家长在本设备查看</span>
             </label>
             <button class="button primary" type="submit">${icon("check")}保存今天的发现</button>
           </div>
         </form>
-        <p class="fine-print">复盘可以跳过。没有完成，也能记录什么方法不适用。</p>
+        <p class="fine-print">分享只控制同一台设备上的家长区是否显示，不会发送到家长手机；分享与否都不影响复盘奖励。复盘也可以跳过。</p>
       </section>
     </div>
 
