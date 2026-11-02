@@ -1,8 +1,8 @@
-import { getRecord, putRecord, getAll, transactionDone, openDatabase } from "./db.js?v=1.13.8";
-import { DEFAULT_SETTINGS } from "./reward-rules.js?v=1.13.8";
+import { getRecord, putRecord, getAll, transactionDone, openDatabase } from "./db.js?v=1.13.10";
+import { DEFAULT_SETTINGS } from "./reward-rules.js?v=1.13.10";
 import { makeId } from "../utils/id.js";
-import { hashPin, makeSalt, validatePin } from "../utils/pin.js?v=1.13.8";
-import { DEFAULT_IMPORT_SETTINGS } from "./teacher-import-rules.js?v=1.13.8";
+import { hashPin, makeSalt, validatePin } from "../utils/pin.js?v=1.13.10";
+import { DEFAULT_IMPORT_SETTINGS } from "./teacher-import-rules.js?v=1.13.10";
 
 function normalizedImporterSettings(value = {}) {
   return {

@@ -551,6 +551,53 @@ test("combined teacher messages keep each subject and preserve follow-up checks"
   );
 });
 
+test("annotation homework is captured and future class drills do not move review to tomorrow", () => {
+  const parsed = parseTeacherMessage(
+    `数学-示例老师 16:41:14
+11.2数学
+一、作业
+1.订正错题、练计算（小数乘除法）
+2.练习册P54-56。
+3.订正启智21-24。（周二再查）
+4.每日一题（选做）：
+长方形绕中心点至少旋转（      ）° 可以与原图形重合。
+二、小结
+2.表扬练习册P51-53A+的2人：101.102。
+缺交或少做的2人：103.104。
+
+英语-示例老师 16:43:03
+2️⃣作业布置
+1.用二号本写一篇作文（仿写）
+2.继续默写知识清单
+3.复习、明天堂练
+
+语文-示例老师 16:47:09
+今天学习了第15课第一课时，作业为：
+1、继续完成第15课生字和词语；
+2、批注：用课堂上老师讲的方法读熟第15课，并批注“说明方法”（最少5处）。`,
+    {
+      today: "2026-11-02",
+      settings: {
+        ...realMessageSettings,
+        identifiers: ["900", "示例孩子"],
+      },
+      now: new Date(2026, 10, 2, 18, 0),
+    },
+  );
+  assert.equal(parsed.tasks.length, 10);
+  assert.ok(
+    parsed.tasks.some(
+      (task) =>
+        task.subject === "语文" &&
+        /批注/.test(task.title) &&
+        task.date === "2026-11-02",
+    ),
+  );
+  const reviewTask = parsed.tasks.find((task) => task.title === "复习、明天堂练");
+  assert.ok(reviewTask);
+  assert.equal(reviewTask.date, "2026-11-02");
+});
+
 test("legacy imports are rematched to the correct subject section", () => {
   const importRecord = {
     id: "import_legacy",

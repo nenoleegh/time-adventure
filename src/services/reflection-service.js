@@ -1,5 +1,5 @@
-import { getRecord, putRecord } from "./db.js?v=1.13.8";
-import { awardReflection } from "./ledger-service.js?v=1.13.8";
+import { getRecord, putRecord } from "./db.js?v=1.13.10";
+import { awardReflection } from "./ledger-service.js?v=1.13.10";
 
 export function emptyReflection(day) {
   return {

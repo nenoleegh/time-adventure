@@ -8,7 +8,7 @@ import {
 } from "../utils/date.js";
 import { escapeAttr, escapeHtml, icon } from "../ui/html.js";
 import { buildCourseOccurrences } from "../services/course-schedule-rules.js";
-import { resolveTaskSubject } from "../services/task-rules.js?v=1.13.8";
+import { resolveTaskSubject } from "../services/task-rules.js?v=1.13.10";
 
 export const TIMELINE_START_MINUTES = 6 * 60 + 30;
 export const TIMELINE_END_MINUTES = 23 * 60;

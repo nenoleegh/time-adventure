@@ -3,7 +3,7 @@ import {
   getAll,
   openDatabase,
   transactionDone,
-} from "./db.js?v=1.13.8";
+} from "./db.js?v=1.13.10";
 import { makeId } from "../utils/id.js";
 import { weekdayLabel } from "./course-schedule-rules.js";
 

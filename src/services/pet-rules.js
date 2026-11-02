@@ -28,6 +28,10 @@ export const PET_CARE_COSTS = {
 
 export const PET_TASK_COMPLETION_POINTS = 1;
 
+export const PET_SLEEP_START_MINUTES = 22 * 60;
+export const PET_SLEEP_END_MINUTES = 6 * 60 + 30;
+export const PET_SLEEP_LABEL = "22:00–06:30";
+
 const HOUR_MS = 60 * 60 * 1000;
 
 function clampNeed(value) {
@@ -36,6 +40,13 @@ function clampNeed(value) {
 
 function nowIso(now) {
   return (now instanceof Date ? now : new Date(now)).toISOString();
+}
+
+export function isPetSleepTime(now = new Date()) {
+  const current = now instanceof Date ? now : new Date(now);
+  if (Number.isNaN(current.getTime())) return false;
+  const minutes = current.getHours() * 60 + current.getMinutes();
+  return minutes >= PET_SLEEP_START_MINUTES || minutes < PET_SLEEP_END_MINUTES;
 }
 
 export function createEggProfile(now = new Date()) {
@@ -279,6 +290,9 @@ export function applyPetCare(profile, action, now = new Date()) {
     throw new Error("小恐龙已经暂时离开，需要重新领养。");
   }
   const current = now instanceof Date ? now : new Date(now);
+  if (isPetSleepTime(current)) {
+    throw new Error(`小恐龙正在睡觉（${PET_SLEEP_LABEL}），早上 6:30 后再来照顾它。`);
+  }
   let next = advancePetProfile(profile, current);
   const lastAction = next.lastActionAt?.[action]
     ? new Date(next.lastActionAt[action]).getTime()
@@ -345,6 +359,9 @@ export function applyPetCare(profile, action, now = new Date()) {
 
 export function applyPetTreatment(profile, now = new Date()) {
   const current = now instanceof Date ? now : new Date(now);
+  if (isPetSleepTime(current)) {
+    throw new Error(`小恐龙正在睡觉（${PET_SLEEP_LABEL}），早上 6:30 后再来照顾它。`);
+  }
   const next = advancePetProfile(profile, current);
   if (!["sick", "critical"].includes(petStatusFor(next, current))) {
     throw new Error("现在不需要治疗，继续照顾好它就好。");

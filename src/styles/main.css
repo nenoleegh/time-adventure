@@ -2772,6 +2772,11 @@ textarea {
   color: #6d559f;
 }
 
+.pet-status.sleeping {
+  background: #dfe9f7;
+  color: #35557a;
+}
+
 .pet-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 330px;
@@ -2811,6 +2816,50 @@ textarea {
   background:
     repeating-linear-gradient(90deg, transparent 0 64px, rgba(71, 137, 79, 0.08) 64px 65px),
     #b9dca2;
+}
+
+.pet-scene.pet-sleeping {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 38px, rgba(186, 211, 235, 0.08) 38px 39px),
+    repeating-linear-gradient(90deg, transparent 0 38px, rgba(186, 211, 235, 0.08) 38px 39px),
+    linear-gradient(#172942 0 72%, #27423b 72%);
+}
+
+.pet-scene.pet-sleeping::after {
+  background:
+    repeating-linear-gradient(90deg, transparent 0 64px, rgba(180, 214, 190, 0.07) 64px 65px),
+    #27423b;
+}
+
+.pet-scene.pet-sleeping .pet-window-glow {
+  border-radius: 50%;
+  background: #ffe8a3;
+  box-shadow: -10px 0 0 #172942;
+}
+
+.pet-scene.pet-sleeping .pet-cloud {
+  background: rgba(196, 218, 239, 0.22);
+  box-shadow:
+    17px -10px rgba(196, 218, 239, 0.22),
+    36px 0 rgba(196, 218, 239, 0.22);
+}
+
+.pet-scene.pet-sleeping .pet-speech {
+  border-color: #47647e;
+  background: #eff5fc;
+  color: #28445e;
+  box-shadow: 4px 4px 0 rgba(12, 28, 48, 0.2);
+}
+
+.pet-scene.pet-sleeping .pet-speech::after {
+  border-color: #47647e;
+  background: #eff5fc;
+}
+
+.pet-scene.pet-sleeping .pet-sprite-wrap {
+  filter:
+    brightness(.82)
+    drop-shadow(0 15px 7px rgba(4, 15, 28, 0.35));
 }
 
 .pet-window-glow {
@@ -3198,6 +3247,27 @@ textarea {
 .pet-health-warning .icon {
   width: 14px;
   height: 14px;
+  flex: 0 0 auto;
+}
+
+.pet-sleep-window-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0 19px 19px;
+  padding: 12px 14px;
+  border: 1px solid #c7d8ea;
+  border-radius: 12px;
+  background: #edf4fb;
+  color: #35557a;
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1.55;
+}
+
+.pet-sleep-window-note .icon {
+  width: 15px;
+  height: 15px;
   flex: 0 0 auto;
 }
 
@@ -6087,11 +6157,17 @@ textarea {
     height: 400px;
   }
 
+  .pet-status {
+    width: fit-content;
+  }
+
   .pet-speech {
     top: 36px;
+    bottom: auto;
     left: 24px;
     width: 190px;
     font-size: 9px;
+    transform: none;
   }
 
   .pet-sprite-wrap {
@@ -6772,11 +6848,17 @@ html[data-mobile-layout="true"] .pet-scene {
   height: clamp(330px, 88vw, 400px);
 }
 
+html[data-mobile-layout="true"] .pet-status {
+  width: fit-content;
+}
+
 html[data-mobile-layout="true"] .pet-speech {
   top: 25px;
+  bottom: auto;
   left: 14px;
   width: min(215px, 63vw);
   font-size: 9px;
+  transform: none;
 }
 
 html[data-mobile-layout="true"] .pet-sprite-wrap {

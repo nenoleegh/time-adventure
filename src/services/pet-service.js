@@ -4,7 +4,7 @@ import {
   putRecord,
   transactionDone,
   openDatabase,
-} from "./db.js?v=1.13.8";
+} from "./db.js?v=1.13.10";
 import { makeId } from "../utils/id.js";
 import { dateKey } from "../utils/date.js";
 import {
@@ -20,7 +20,9 @@ import {
   petCareAvailability,
   spendPetPoints,
   petNameIsValid,
-} from "./pet-rules.js?v=1.13.8";
+  isPetSleepTime,
+  PET_SLEEP_LABEL,
+} from "./pet-rules.js?v=1.13.10";
 
 function nowIso() {
   return new Date().toISOString();
@@ -124,6 +126,9 @@ export async function hatchPetWithName(name, now = new Date()) {
 
 export async function careForPet(action, now = new Date()) {
   const profile = await getPetProfile(now);
+  if (isPetSleepTime(now)) {
+    throw new Error(`小恐龙正在睡觉（${PET_SLEEP_LABEL}），早上 6:30 后再来照顾它。`);
+  }
   const cost = PET_CARE_COSTS[action] || 0;
   const availability = petCareAvailability(profile, action);
   if (!availability.available && availability.reason === "full") {
@@ -153,6 +158,9 @@ export async function careForPet(action, now = new Date()) {
 
 export async function treatPet(now = new Date()) {
   const profile = await getPetProfile(now);
+  if (isPetSleepTime(now)) {
+    throw new Error(`小恐龙正在睡觉（${PET_SLEEP_LABEL}），早上 6:30 后再来照顾它。`);
+  }
   const cost = PET_CARE_COSTS.treat;
   const spent = spendPetPoints(profile, cost);
   if (!spent.ok) {

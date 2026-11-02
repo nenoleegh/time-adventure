@@ -1,7 +1,7 @@
 import { formatDateCN, formatMinutes, formatShortDate } from "../utils/date.js";
 import { buildWeeklySummary } from "../services/report-rules.js";
 import { escapeHtml, icon } from "../ui/html.js";
-import { FEATURES } from "../config/features.js?v=1.13.8";
+import { FEATURES } from "../config/features.js?v=1.13.10";
 
 function chart(summary) {
   const max = Math.max(1, ...summary.daily.map((day) => day.total));

@@ -1,4 +1,4 @@
-import { icon } from "../ui/html.js?v=1.13.8";
+import { icon } from "../ui/html.js?v=1.13.10";
 
 const guideSteps = [
   {
@@ -19,7 +19,7 @@ const guideSteps = [
   {
     icon: "pet",
     title: "照顾小恐龙",
-    text: "完成一项任务获得 1 个互动点，可用来喂食、喂水、清理和治疗。记得每天回来看看它。",
+    text: "完成一项任务获得 1 个互动点，可用来喂食、喂水、清理和治疗。小恐龙每天 22:00 至次日 06:30 会睡觉，期间暂停互动。",
   },
   {
     icon: "lock",

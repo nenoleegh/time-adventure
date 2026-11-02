@@ -4,12 +4,14 @@ import {
   petSizeScale,
   petStatusLabel,
   petVisualState,
+  isPetSleepTime,
   PET_CARE_COSTS,
+  PET_SLEEP_LABEL,
   PET_WEIGHT,
   PET_MILESTONES,
   petCareAvailability,
-} from "../services/pet-rules.js?v=1.13.8";
-import { escapeHtml, icon } from "../ui/html.js?v=1.13.8";
+} from "../services/pet-rules.js?v=1.13.10";
+import { escapeHtml, icon } from "../ui/html.js?v=1.13.10";
 
 function needBar(label, value, kind) {
   return `
@@ -122,28 +124,37 @@ function careButton(
     </button>`;
 }
 
-function healthyScreen(state, profile) {
+function healthyScreen(state, profile, now = new Date()) {
+  const currentTime = now instanceof Date ? now : new Date(now);
+  const sleeping = isPetSleepTime(currentTime);
   const status = profile.status;
   const visualState = petVisualState(profile);
-  const healthRisk = petHealthRisk(profile);
-  const displayStatus = {
-    thirsty: "口渴了",
-    hungry: "肚子饿了",
-    dirty: "需要清理",
-    sick: petStatusLabel(status),
-    recovering: "正在恢复",
-    healthy: petStatusLabel(status),
-  }[visualState];
+  const healthRisk = petHealthRisk(profile, currentTime);
+  const displayStatus = sleeping
+    ? "睡觉中"
+    : {
+        thirsty: "口渴了",
+        hungry: "肚子饿了",
+        dirty: "需要清理",
+        sick: petStatusLabel(status),
+        recovering: "正在恢复",
+        healthy: petStatusLabel(status),
+      }[visualState];
   const sizeScale = petSizeScale(profile);
   const careDays = Math.max(
     1,
     Math.floor(
-      (Date.now() - new Date(profile.hatchedAt || profile.createdAt).getTime()) /
+      (currentTime.getTime() - new Date(profile.hatchedAt || profile.createdAt).getTime()) /
         (24 * 60 * 60 * 1000),
     ) + 1,
   );
-  const ageHours = petNeglectHours(profile);
-  const idleAction = visualState === "healthy" ? state.petIdleAction || "" : "";
+  const ageHours = petNeglectHours(profile, currentTime);
+  const petAction = sleeping ? "" : state.petAction;
+  const idleAction = sleeping
+    ? "sleep"
+    : visualState === "healthy"
+      ? state.petIdleAction || ""
+      : "";
   const canTreat = ["sick", "critical"].includes(status);
   const petPoints = Math.max(0, Number(profile.petPoints) || 0);
   const feedAvailability = petCareAvailability(profile, "feed");
@@ -151,7 +162,7 @@ function healthyScreen(state, profile) {
   const cleanAvailability = petCareAvailability(profile, "clean");
   const petAvailability = petCareAvailability(profile, "pet");
   const action = [
-    state.petAction ? `action-${state.petAction}` : "",
+    petAction ? `action-${petAction}` : "",
     idleAction ? `idle-${idleAction}` : "",
   ].filter(Boolean).join(" ");
   const poop = Array.from({ length: Math.min(3, profile.poopCount || 0) })
@@ -163,7 +174,7 @@ function healthyScreen(state, profile) {
     clean: "selfClean",
     pet: "headPet",
     treat: "sick",
-  }[state.petAction];
+  }[petAction];
   const idleSprite = {
     walk: "walk",
     selfClean: "selfClean",
@@ -174,28 +185,32 @@ function healthyScreen(state, profile) {
   }[idleAction];
   const statusSprite =
     visualState === "recovering" ? "sick" : visualState;
-  const spriteState = actionSprite ||
-    idleSprite ||
-    (["thirsty", "hungry", "dirty", "sick"].includes(statusSprite)
-      ? statusSprite
-      : visualState === "healthy"
-        ? "idle"
-        : "");
+  const spriteState = sleeping
+    ? "sleep"
+    : actionSprite ||
+      idleSprite ||
+      (["thirsty", "hungry", "dirty", "sick"].includes(statusSprite)
+        ? statusSprite
+        : visualState === "healthy"
+          ? "idle"
+          : "");
   const spriteMarkup =
-    state.petAction === "hatch"
+    petAction === "hatch"
       ? `
         <div class="hatch-in-progress">
-          <img class="pet-sprite hatch-baby" src="./assets/dino/dino-baby.png?v=1.13.8" alt="${escapeHtml(profile.name)}刚刚孵化">
+          <img class="pet-sprite hatch-baby" src="./assets/dino/dino-baby.png?v=1.13.10" alt="${escapeHtml(profile.name)}刚刚孵化">
           <span class="hatch-shell shell-left"></span>
           <span class="hatch-shell shell-right"></span>
           <span class="hatch-spark spark-one">✦</span>
           <span class="hatch-spark spark-two">✦</span>
         </div>`
       : spriteState
-        ? `<div class="pet-state-sprite state-${spriteState}" style="--state-sprite:url('/assets/dino/animations/${spriteState}.png?v=1.13.8')"></div>`
-        : `<img class="pet-sprite" src="./assets/dino/dino-baby.png?v=1.13.8" alt="${escapeHtml(profile.name)}，一只像素小恐龙">`;
+        ? `<div class="pet-state-sprite state-${spriteState}" style="--state-sprite:url('/assets/dino/animations/${spriteState}.png?v=1.13.10')"></div>`
+        : `<img class="pet-sprite" src="./assets/dino/dino-baby.png?v=1.13.10" alt="${escapeHtml(profile.name)}，一只像素小恐龙">`;
   const speech =
-    state.petAction === "hatch"
+    sleeping
+      ? `现在已经到睡觉时间啦。每天早上 6:30 以后再来一起玩。`
+      : petAction === "hatch"
       ? `啪嗒！我是${profile.name}，今天出生啦！`
       : idleSpeech(idleAction) || petSpeech(status);
   const speechBottom = Math.min(330, Math.round(28 + 390 * sizeScale));
@@ -205,15 +220,15 @@ function healthyScreen(state, profile) {
         <div>
           <span class="eyebrow">我的小恐龙</span>
           <h1>${escapeHtml(profile.name)} · ${escapeHtml(displayStatus)}</h1>
-          <p>陪伴第 ${careDays} 天 · 记得完成喂食、喂水和清理，让小屋保持清爽。</p>
+          <p>${sleeping ? `每天 ${PET_SLEEP_LABEL} 是小恐龙的睡觉时间，早上 6:30 后再来照顾它。` : `陪伴第 ${careDays} 天 · 记得完成喂食、喂水和清理，让小屋保持清爽。`}</p>
         </div>
-        <span class="pet-status ${visualState}">${escapeHtml(displayStatus)}</span>
+        <span class="pet-status ${sleeping ? "sleeping" : visualState}">${escapeHtml(displayStatus)}</span>
       </div>
 
       <div class="pet-layout">
         <div class="pet-main-column">
           <section class="pet-habitat-card">
-            <div class="pet-scene ${action} status-${status}" style="--speech-bottom:${speechBottom}px">
+            <div class="pet-scene ${sleeping ? "pet-sleeping" : ""} ${action} status-${status}" style="--speech-bottom:${speechBottom}px">
               <div class="pet-window-glow"></div>
               <span class="pet-cloud one"></span>
               <span class="pet-cloud two"></span>
@@ -221,6 +236,10 @@ function healthyScreen(state, profile) {
               <div class="pet-sprite-wrap" style="--pet-scale:${sizeScale.toFixed(2)}">
                 ${spriteMarkup}
               </div>
+              ${sleeping ? `
+                <span class="pet-sleep-z z-one">Z</span>
+                <span class="pet-sleep-z z-two">Z</span>
+                <span class="pet-sleep-z z-three">Z</span>` : ""}
               ${profile.poopCount && visualState !== "dirty" ? `<div class="pet-poop-area">${poop}</div>` : ""}
             </div>
             <div class="pet-needs-grid">
@@ -234,14 +253,17 @@ function healthyScreen(state, profile) {
                 ${icon("shield")}
                 <span>${healthRisk.lowNeeds === 2 ? "饱腹和水分都低于 30%" : "饱腹或水分低于 30%"}，持续偏低容易生病。</span>
               </div>` : ""}
-            <div class="pet-care-grid">
-              ${careButton("feed", "喂食", feedAvailability.reason === "full" ? "饱腹已满" : "莓果饼干", icon("food"), !feedAvailability.available, PET_CARE_COSTS.feed)}
-              ${careButton("water", "喂水", waterAvailability.reason === "full" ? "水分已满" : "清凉泉水", icon("water"), !waterAvailability.available, PET_CARE_COSTS.water)}
-              ${careButton("clean", "清理", cleanAvailability.reason === "full" ? "清洁已满" : profile.poopCount ? "需要打扫" : "保持清爽", icon("broom"), !cleanAvailability.available, PET_CARE_COSTS.clean)}
-              ${careButton("pet", "抚摸", petAvailability.reason === "full" ? "心情已满" : "陪它玩耍", icon("heart"), !petAvailability.available, PET_CARE_COSTS.pet)}
-              ${canTreat ? careButton("treat", "治疗", "使用药品", icon("medicine"), petPoints < PET_CARE_COSTS.treat, PET_CARE_COSTS.treat) : ""}
-            </div>
-            ${state.petMessage ? `<div class="pet-action-message">${escapeHtml(state.petMessage)}</div>` : ""}
+            ${sleeping ? `
+              <div class="pet-sleep-window-note">${icon("clock")}<span>${PET_SLEEP_LABEL} 暂停喂食、清理和陪玩。${visualState !== "healthy" ? "当前状态会在早晨继续显示。" : "让小恐龙好好休息，早上再来看看它。"}</span></div>` : `
+              <div class="pet-care-grid">
+                ${careButton("feed", "喂食", feedAvailability.reason === "full" ? "饱腹已满" : "莓果饼干", icon("food"), !feedAvailability.available, PET_CARE_COSTS.feed)}
+                ${careButton("water", "喂水", waterAvailability.reason === "full" ? "水分已满" : "清凉泉水", icon("water"), !waterAvailability.available, PET_CARE_COSTS.water)}
+                ${careButton("clean", "清理", cleanAvailability.reason === "full" ? "清洁已满" : profile.poopCount ? "需要打扫" : "保持清爽", icon("broom"), !cleanAvailability.available, PET_CARE_COSTS.clean)}
+                ${careButton("pet", "抚摸", petAvailability.reason === "full" ? "心情已满" : "陪它玩耍", icon("heart"), !petAvailability.available, PET_CARE_COSTS.pet)}
+                ${canTreat ? careButton("treat", "治疗", "使用药品", icon("medicine"), petPoints < PET_CARE_COSTS.treat, PET_CARE_COSTS.treat) : ""}
+              </div>
+              ${state.petMessage ? `<div class="pet-action-message">${escapeHtml(state.petMessage)}</div>` : ""}
+            `}
           </section>
         </div>
 
@@ -291,9 +313,9 @@ function healthyScreen(state, profile) {
     </div>`;
 }
 
-export function petView(state) {
+export function petView(state, now = new Date()) {
   const profile = state.petProfile;
   if (!profile || profile.stage === "egg") return eggScreen(profile || {});
   if (profile.status === "ended") return endedScreen(profile);
-  return healthyScreen(state, profile);
+  return healthyScreen(state, profile, now);
 }

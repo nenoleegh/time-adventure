@@ -7,6 +7,7 @@ test("first-run guide explains the main workflow and backup boundary", () => {
   assert.match(html, /欢迎来到时间冒险家/);
   assert.match(html, /粘贴老师消息/);
   assert.match(html, /照顾小恐龙/);
+  assert.match(html, /22:00 至次日 06:30/);
   assert.match(html, /本地保存，不搜集学生数据/);
   assert.match(html, /一位家长为解决孩子作业问题而做的开源项目/);
   assert.match(html, /纯静态网页/);

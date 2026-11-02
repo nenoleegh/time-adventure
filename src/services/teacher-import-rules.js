@@ -1,5 +1,5 @@
 import { addDays, dateKey, parseDateKey } from "../utils/date.js";
-import { detectSubject } from "./task-rules.js?v=1.13.8";
+import { detectSubject } from "./task-rules.js?v=1.13.10";
 
 export const DEFAULT_IMPORT_SETTINGS = {
   identifiers: [],
@@ -52,7 +52,7 @@ const WEEKDAY_NUMBER = {
 };
 
 const TASK_CUES =
-  /作业|练习册|练习卷|练习|习题|口算|计算|练计算|每日一题|背诵|背书本|背课文|背书|默写|家默|听写|单词|词语|预习|复习|抄写|阅读|作文|试卷|卷子|手抄报|读书|朗读|读课文|整理错题|订正|修改|启智|仿照|画图|写自己|数学书|语文书|英语书|(?:^|[，；\s])完成|准备/;
+  /作业|练习册|练习卷|练习|习题|口算|计算|练计算|每日一题|背诵|背书本|背课文|背书|默写|家默|听写|单词|词语|预习|复习|抄写|阅读|作文|试卷|卷子|手抄报|读书|朗读|读课文|整理错题|订正|修改|批注|启智|仿照|画图|写自己|数学书|语文书|英语书|(?:^|[，；\s])完成|准备/;
 const FEEDBACK_CUES =
   /完成情况|学习情况|表现|反馈|表扬|批评|全对|满分|优秀|进步|学霸|之星|未交|缺交|补交|未完成|未按时|不合格|错误较多|错题|未订正|没订正|没有订正|需加强|迟到/;
 
@@ -171,6 +171,14 @@ export function inferDueDate(text, today = dateKey()) {
   }
 
   return resolveWeekday(text, today);
+}
+
+function inferTaskDate(text, today, fallback) {
+  const withoutFutureActivity = String(text || "").replace(
+    /(?:明天|明日)(?:课堂)?(?:堂练|小测|测验|考试)/g,
+    "",
+  );
+  return inferDueDate(withoutFutureActivity, today) || fallback || today;
 }
 
 function upcomingSunday(today) {
@@ -874,7 +882,7 @@ export function parseTeacherMessage(text, options = {}) {
       for (const title of pieces) {
         rawTasks.push({
           title,
-          date: inferDueDate(sentence, today) || section.date || today,
+          date: inferTaskDate(sentence, today, section.date),
           estimatedMinutes: estimateDuration(title),
           subject:
             explicitSubjectOf(title) ||

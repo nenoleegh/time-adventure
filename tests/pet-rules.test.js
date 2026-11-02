@@ -6,6 +6,7 @@ import {
   applyPetPointAward,
   applyPetTreatment,
   createEggProfile,
+  isPetSleepTime,
   petMilestoneSummary,
   petNameIsValid,
   petCareAvailability,
@@ -34,6 +35,14 @@ test("pet name accepts one to twelve characters and rejects empty names", () => 
   assert.equal(petNameIsValid("小恐龙探险家一号"), true);
   assert.equal(petNameIsValid(""), false);
   assert.equal(petNameIsValid("一".repeat(13)), false);
+});
+
+test("pet sleep window covers 22:00 through 06:29", () => {
+  assert.equal(isPetSleepTime(new Date(2026, 10, 1, 21, 59)), false);
+  assert.equal(isPetSleepTime(new Date(2026, 10, 1, 22, 0)), true);
+  assert.equal(isPetSleepTime(new Date(2026, 10, 2, 0, 0)), true);
+  assert.equal(isPetSleepTime(new Date(2026, 10, 2, 6, 29)), true);
+  assert.equal(isPetSleepTime(new Date(2026, 10, 2, 6, 30)), false);
 });
 
 test("pet state moves through low, sick, critical and ended milestones", () => {
@@ -119,6 +128,20 @@ test("care actions improve needs and reset the effective care time", () => {
   assert.ok(result.profile.nextPoopAt);
 });
 
+test("care and treatment are blocked while the pet is sleeping", () => {
+  const pet = hatchedProfile(new Date(2026, 10, 1, 20, 0));
+  assert.throws(
+    () => applyPetCare(pet, "feed", new Date(2026, 10, 1, 22, 0)),
+    /正在睡觉/,
+  );
+  assert.throws(
+    () => applyPetTreatment(pet, new Date(2026, 10, 1, 23, 0)),
+    /正在睡觉/,
+  );
+  assert.doesNotThrow(
+    () => applyPetCare(pet, "feed", new Date(2026, 10, 2, 6, 30)),
+  );
+});
 test("treatment enters recovery and completes after six hours", () => {
   const sickAt = new Date("2026-10-04T08:00:00.000Z");
   const pet = {
