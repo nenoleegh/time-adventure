@@ -25,11 +25,11 @@ export const THEME_OPTIONS = [
   },
   {
     id: "forest",
-    name: "森林探险",
-    tag: "自然",
-    description: "嫩叶绿与暖橙色，自然、有行动感。",
-    colors: ["#e1f3dc", "#367d4e", "#e18a35"],
-    themeColor: "#eff8ed",
+    name: "林间手账",
+    tag: "手帐",
+    description: "暖米色、苔绿与陶土色，主要卡片使用虚线手账边框。",
+    colors: ["#efe6cf", "#4b6b2f", "#c96b35"],
+    themeColor: "#f6f1e4",
   },
   {
     id: "starlight",
@@ -41,11 +41,11 @@ export const THEME_OPTIONS = [
   },
   {
     id: "pixel",
-    name: "霓虹像素",
-    tag: "电玩",
-    description: "未来紫与湖蓝点缀亮粉色，活泼又有游戏感。",
-    colors: ["#eadfff", "#6148c7", "#ff6e9d"],
-    themeColor: "#f7f1ff",
+    name: "方块世界",
+    tag: "方块",
+    description: "草地绿、泥土棕与像素方格，像在积木世界里安排一天。",
+    colors: ["#eaf5dc", "#4f7f2f", "#9a5d32"],
+    themeColor: "#eef8e5",
   },
 ];
 

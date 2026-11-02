@@ -1,7 +1,7 @@
 import { formatDateCN } from "../utils/date.js";
-import { REDEMPTION_STATUSES } from "../services/reward-rules.js?v=1.13.11";
+import { REDEMPTION_STATUSES } from "../services/reward-rules.js?v=1.13.13";
 import { escapeAttr, escapeHtml, icon } from "../ui/html.js";
-import { THEME_OPTIONS } from "../config/themes.js?v=1.13.11";
+import { THEME_OPTIONS } from "../config/themes.js?v=1.13.13";
 
 export const REWARD_PRODUCT_TEMPLATES = [
   {

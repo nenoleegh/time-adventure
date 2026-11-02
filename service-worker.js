@@ -1,4 +1,4 @@
-const CACHE_NAME = "time-adventure-v1.13.11";
+const CACHE_NAME = "time-adventure-v1.13.13";
 const APP_SHELL = [
   "./",
   "./index.html",

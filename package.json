@@ -1,6 +1,6 @@
 {
   "name": "time-adventure",
-  "version": "1.13.11",
+  "version": "1.13.13",
   "private": true,
   "type": "module",
   "description": "A local-first iPad planning app for children aged 11 to 12.",

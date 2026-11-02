@@ -4,19 +4,19 @@ import {
   formatDateCN,
   formatMinutes,
   weekKey,
-} from "./utils/date.js?v=1.13.11";
+} from "./utils/date.js?v=1.13.13";
 import {
   DEFAULT_PRODUCTS,
   validateRewardSettings,
-} from "./services/reward-rules.js?v=1.13.11";
+} from "./services/reward-rules.js?v=1.13.13";
 import {
   getSettings,
   getSettingHistory,
   saveSettings,
   setParentPin,
   verifyParentPin,
-} from "./services/settings-service.js?v=1.13.11";
-import { getAll, exportDatabase, importDatabase } from "./services/db.js?v=1.13.11";
+} from "./services/settings-service.js?v=1.13.13";
+import { getAll, exportDatabase, importDatabase } from "./services/db.js?v=1.13.13";
 import {
   createTask,
   deleteTask,
@@ -32,8 +32,8 @@ import {
   updateTask,
   backfillTaskSubjects,
   markTaskReminderShown,
-} from "./services/task-service.js?v=1.13.11";
-import { getLedger } from "./services/ledger-service.js?v=1.13.11";
+} from "./services/task-service.js?v=1.13.13";
+import { getLedger } from "./services/ledger-service.js?v=1.13.13";
 import {
   cancelRedemption,
   approveRedemption,
@@ -41,47 +41,47 @@ import {
   markRedeemed,
   rejectRedemption,
   requestRedemption,
-} from "./services/redemption-service.js?v=1.13.11";
-import { getReflection, saveReflection } from "./services/reflection-service.js?v=1.13.11";
+} from "./services/redemption-service.js?v=1.13.13";
+import { getReflection, saveReflection } from "./services/reflection-service.js?v=1.13.13";
 import {
   estimateFeedback,
   elapsedMs,
   resolveTaskSubject,
   SUBJECT_OPTIONS,
   TASK_TYPES,
-} from "./services/task-rules.js?v=1.13.11";
-import { ledgerBalance } from "./services/ledger-rules.js?v=1.13.11";
-import { todayView } from "./views/today.js?v=1.13.11";
-import { planView } from "./views/plan.js?v=1.13.11";
-import { rewardsView } from "./views/rewards.js?v=1.13.11";
-import { growthView } from "./views/growth.js?v=1.13.11";
+} from "./services/task-rules.js?v=1.13.13";
+import { ledgerBalance } from "./services/ledger-rules.js?v=1.13.13";
+import { todayView } from "./views/today.js?v=1.13.13";
+import { planView } from "./views/plan.js?v=1.13.13";
+import { rewardsView } from "./views/rewards.js?v=1.13.13";
+import { growthView } from "./views/growth.js?v=1.13.13";
 import {
   parentView,
   REWARD_PRODUCT_TEMPLATES,
   rewardProductFieldsHtml,
-} from "./views/parent.js?v=1.13.11";
-import { helpDialogHtml } from "./views/help.js?v=1.13.11";
-import { escapeHtml, icon } from "./ui/html.js?v=1.13.11";
-import { validatePin } from "./utils/pin.js?v=1.13.11";
-import { makeId } from "./utils/id.js?v=1.13.11";
+} from "./views/parent.js?v=1.13.13";
+import { helpDialogHtml } from "./views/help.js?v=1.13.13";
+import { escapeHtml, icon } from "./ui/html.js?v=1.13.13";
+import { validatePin } from "./utils/pin.js?v=1.13.13";
+import { makeId } from "./utils/id.js?v=1.13.13";
 import {
   minutesToTime,
   parseTeacherMessage,
   timeToMinutes,
-} from "./services/teacher-import-rules.js?v=1.13.11";
+} from "./services/teacher-import-rules.js?v=1.13.13";
 import {
   backfillFeedbackSubjects,
   commitTeacherImport,
   getFeedbackForDate,
   scrubTeacherImportMessages,
-} from "./services/teacher-import-service.js?v=1.13.11";
+} from "./services/teacher-import-service.js?v=1.13.13";
 import {
   importEntryDialogHtml,
   importExampleText,
   importPreviewDialogHtml,
   importSettingsDialogHtml,
-} from "./views/teacher-import.js?v=1.13.11";
-import { installTimelineDrag } from "./ui/timeline-drag.js?v=1.13.11";
+} from "./views/teacher-import.js?v=1.13.13";
+import { installTimelineDrag } from "./ui/timeline-drag.js?v=1.13.13";
 import {
   buildCourseOccurrences,
   courseHasConflict,
@@ -89,39 +89,39 @@ import {
   markCourseDuplicates,
   parseCourseText,
   parseCourseRows,
-} from "./services/course-schedule-rules.js?v=1.13.11";
+} from "./services/course-schedule-rules.js?v=1.13.13";
 import {
   deleteCourseTemplate,
   getCourseTemplates,
   saveCourseTemplates,
-} from "./services/course-schedule-service.js?v=1.13.11";
+} from "./services/course-schedule-service.js?v=1.13.13";
 import {
   COURSE_EXAMPLE,
   courseImportEntryHtml,
   courseImportPreviewHtml,
   courseManagerHtml,
   deleteCourseDialogHtml,
-} from "./views/course-import.js?v=1.13.11";
+} from "./views/course-import.js?v=1.13.13";
 import {
   parseDelimitedText,
   readCourseSpreadsheet,
   rowsToTsv,
-} from "./services/table-file.js?v=1.13.11";
+} from "./services/table-file.js?v=1.13.13";
 import {
   applyFeatureSettings,
   FEATURES,
-} from "./config/features.js?v=1.13.11";
+} from "./config/features.js?v=1.13.13";
 import {
   DEFAULT_THEME_ID,
   normalizeThemeId,
   THEME_OPTIONS,
-} from "./config/themes.js?v=1.13.11";
+} from "./config/themes.js?v=1.13.13";
 import {
   buildTaskCalendarIcs,
   calendarFileName,
   findDueTaskReminder,
   reminderKey,
-} from "./services/reminder-rules.js?v=1.13.11";
+} from "./services/reminder-rules.js?v=1.13.13";
 import {
   careForPet,
   awardPetPointsForTask,
@@ -132,14 +132,14 @@ import {
   reAdoptPet,
   tapPetEgg,
   treatPet,
-} from "./services/pet-service.js?v=1.13.11";
-import { petView } from "./views/pet.js?v=1.13.11";
+} from "./services/pet-service.js?v=1.13.13";
+import { petView } from "./views/pet.js?v=1.13.13";
 import {
   isPetSleepTime,
   PET_CARE_ACTIONS,
   PET_CARE_COSTS,
   petVisualState,
-} from "./services/pet-rules.js?v=1.13.11";
+} from "./services/pet-rules.js?v=1.13.13";
 
 const ALL_ROUTES = [
   { id: "today", label: "今天", icon: "today" },

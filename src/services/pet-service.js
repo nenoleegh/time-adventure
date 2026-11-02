@@ -4,7 +4,7 @@ import {
   putRecord,
   transactionDone,
   openDatabase,
-} from "./db.js?v=1.13.11";
+} from "./db.js?v=1.13.13";
 import { makeId } from "../utils/id.js";
 import { dateKey } from "../utils/date.js";
 import {
@@ -22,7 +22,7 @@ import {
   petNameIsValid,
   isPetSleepTime,
   PET_SLEEP_LABEL,
-} from "./pet-rules.js?v=1.13.11";
+} from "./pet-rules.js?v=1.13.13";
 
 function nowIso() {
   return new Date().toISOString();

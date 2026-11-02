@@ -1,5 +1,5 @@
 import { addDays, dateKey, parseDateKey } from "../utils/date.js";
-import { minutesToTime, timeToMinutes } from "./teacher-import-rules.js?v=1.13.11";
+import { minutesToTime, timeToMinutes } from "./teacher-import-rules.js?v=1.13.13";
 
 export const WEEKDAY_OPTIONS = [
   { value: 1, label: "周一" },
