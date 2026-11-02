@@ -226,27 +226,27 @@ test("non-overlapping effective date ranges can share a weekday", () => {
 });
 
 test("plain teacher timetable text with Markdown headings and teachers is parsed", () => {
-  const text = `**11:20—12:00**：第四节 美术（钟维）
-- **14:45—15:25**：第五节 语文（钟献英）
-- **15:40—16:20**：第六节 信息科技（杨馥蔓）
+  const text = `**11:20—12:00**：第四节 美术（示例老师丙）
+- **14:45—15:25**：第五节 语文（示例老师甲）
+- **15:40—16:20**：第六节 信息科技（示例老师丁）
 
 **星期三**
 - **8:00—8:20**：早餐
-- **8:20—9:00**：第一节 语文（钟献英）
-- **9:30—10:10**：第二节 数学（刘娟）
-- **10:25—11:05**：第三节 音乐（郑清华）
-- **11:20—12:00**：第四节 体育活动（钟献英）
-- **14:45—15:25**：第五节 劳动（胡明婉）
-- **15:40—16:20**：第六节 道德与法治（钟献英）`;
+- **8:20—9:00**：第一节 语文（示例老师甲）
+- **9:30—10:10**：第二节 数学（示例老师乙）
+- **10:25—11:05**：第三节 音乐（示例老师戊）
+- **11:20—12:00**：第四节 体育活动（示例老师甲）
+- **14:45—15:25**：第五节 劳动（示例老师己）
+- **15:40—16:20**：第六节 道德与法治（示例老师甲）`;
   const parsed = parseCourseText(text, { effectiveFrom: "2026-10-24" });
   assert.equal(parsed.courses.length, 10);
   assert.equal(parsed.courses[0].weekday, 2);
   assert.equal(parsed.courses[0].title, "美术");
-  assert.equal(parsed.courses[0].teacher, "钟维");
+  assert.equal(parsed.courses[0].teacher, "示例老师丙");
   assert.equal(parsed.courses[3].weekday, 3);
   assert.equal(parsed.courses[3].title, "早餐");
   assert.equal(parsed.courses[9].title, "道德与法治");
-  assert.equal(parsed.courses[9].teacher, "钟献英");
+  assert.equal(parsed.courses[9].teacher, "示例老师甲");
   assert.match(parsed.warnings.join(" "), /推定为前一天/);
 });
 

@@ -6,6 +6,7 @@ test("first-run guide explains the main workflow and backup boundary", () => {
   const html = helpDialogHtml({ firstRun: true });
   assert.match(html, /欢迎来到时间冒险家/);
   assert.match(html, /粘贴老师消息/);
+  assert.match(html, /确认导入后会丢弃消息原文/);
   assert.match(html, /照顾小恐龙/);
   assert.match(html, /22:00 至次日 06:30/);
   assert.match(html, /本地保存，不搜集学生数据/);

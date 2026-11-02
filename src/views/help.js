@@ -1,4 +1,4 @@
-import { icon } from "../ui/html.js?v=1.13.10";
+import { icon } from "../ui/html.js?v=1.13.11";
 
 const guideSteps = [
   {
@@ -9,7 +9,7 @@ const guideSteps = [
   {
     icon: "upload",
     title: "粘贴老师消息",
-    text: "“老师消息”可以拆出各科作业，自动安排放学后的时间，并把点到孩子名字或学号的表扬、批评记在当天。",
+    text: "“老师消息”可以拆出各科作业，自动安排放学后的时间，并把匹配孩子的表扬、批评记在当天。确认导入后会丢弃消息原文，只保留拆分后的任务和反馈。",
   },
   {
     icon: "calendar",
@@ -59,7 +59,7 @@ export function helpDialogHtml({ firstRun = false } = {}) {
         ${icon("shield")}
         <p>
           <strong>本地保存，不搜集学生数据</strong>
-          <span>这是一个纯静态网页。任务、老师消息、表扬批评、复盘和成长记录都只保存在当前设备的浏览器中；没有账号系统、服务端数据库、广告或统计 SDK，不会上传或搜集任何学生数据。</span>
+          <span>这是一个纯静态网页。老师消息原文在解析确认后不会保存；拆分后的任务、匹配孩子的反馈、复盘和成长记录只保存在当前设备的浏览器中。没有账号系统、服务端数据库、广告或统计 SDK，不会上传或搜集任何学生数据。</span>
           <span>清理 Safari 网站数据可能删除记录，建议家长定期导出 JSON 备份。</span>
         </p>
       </div>

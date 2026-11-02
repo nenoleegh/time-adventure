@@ -4,19 +4,19 @@ import {
   formatDateCN,
   formatMinutes,
   weekKey,
-} from "./utils/date.js?v=1.13.10";
+} from "./utils/date.js?v=1.13.11";
 import {
   DEFAULT_PRODUCTS,
   validateRewardSettings,
-} from "./services/reward-rules.js?v=1.13.10";
+} from "./services/reward-rules.js?v=1.13.11";
 import {
   getSettings,
   getSettingHistory,
   saveSettings,
   setParentPin,
   verifyParentPin,
-} from "./services/settings-service.js?v=1.13.10";
-import { getAll, exportDatabase, importDatabase } from "./services/db.js?v=1.13.10";
+} from "./services/settings-service.js?v=1.13.11";
+import { getAll, exportDatabase, importDatabase } from "./services/db.js?v=1.13.11";
 import {
   createTask,
   deleteTask,
@@ -32,8 +32,8 @@ import {
   updateTask,
   backfillTaskSubjects,
   markTaskReminderShown,
-} from "./services/task-service.js?v=1.13.10";
-import { getLedger } from "./services/ledger-service.js?v=1.13.10";
+} from "./services/task-service.js?v=1.13.11";
+import { getLedger } from "./services/ledger-service.js?v=1.13.11";
 import {
   cancelRedemption,
   approveRedemption,
@@ -41,46 +41,47 @@ import {
   markRedeemed,
   rejectRedemption,
   requestRedemption,
-} from "./services/redemption-service.js?v=1.13.10";
-import { getReflection, saveReflection } from "./services/reflection-service.js?v=1.13.10";
+} from "./services/redemption-service.js?v=1.13.11";
+import { getReflection, saveReflection } from "./services/reflection-service.js?v=1.13.11";
 import {
   estimateFeedback,
   elapsedMs,
   resolveTaskSubject,
   SUBJECT_OPTIONS,
   TASK_TYPES,
-} from "./services/task-rules.js?v=1.13.10";
-import { ledgerBalance } from "./services/ledger-rules.js?v=1.13.10";
-import { todayView } from "./views/today.js?v=1.13.10";
-import { planView } from "./views/plan.js?v=1.13.10";
-import { rewardsView } from "./views/rewards.js?v=1.13.10";
-import { growthView } from "./views/growth.js?v=1.13.10";
+} from "./services/task-rules.js?v=1.13.11";
+import { ledgerBalance } from "./services/ledger-rules.js?v=1.13.11";
+import { todayView } from "./views/today.js?v=1.13.11";
+import { planView } from "./views/plan.js?v=1.13.11";
+import { rewardsView } from "./views/rewards.js?v=1.13.11";
+import { growthView } from "./views/growth.js?v=1.13.11";
 import {
   parentView,
   REWARD_PRODUCT_TEMPLATES,
   rewardProductFieldsHtml,
-} from "./views/parent.js?v=1.13.10";
-import { helpDialogHtml } from "./views/help.js?v=1.13.10";
-import { escapeHtml, icon } from "./ui/html.js?v=1.13.10";
-import { validatePin } from "./utils/pin.js?v=1.13.10";
-import { makeId } from "./utils/id.js?v=1.13.10";
+} from "./views/parent.js?v=1.13.11";
+import { helpDialogHtml } from "./views/help.js?v=1.13.11";
+import { escapeHtml, icon } from "./ui/html.js?v=1.13.11";
+import { validatePin } from "./utils/pin.js?v=1.13.11";
+import { makeId } from "./utils/id.js?v=1.13.11";
 import {
   minutesToTime,
   parseTeacherMessage,
   timeToMinutes,
-} from "./services/teacher-import-rules.js?v=1.13.10";
+} from "./services/teacher-import-rules.js?v=1.13.11";
 import {
   backfillFeedbackSubjects,
   commitTeacherImport,
   getFeedbackForDate,
-} from "./services/teacher-import-service.js?v=1.13.10";
+  scrubTeacherImportMessages,
+} from "./services/teacher-import-service.js?v=1.13.11";
 import {
   importEntryDialogHtml,
   importExampleText,
   importPreviewDialogHtml,
   importSettingsDialogHtml,
-} from "./views/teacher-import.js?v=1.13.10";
-import { installTimelineDrag } from "./ui/timeline-drag.js?v=1.13.10";
+} from "./views/teacher-import.js?v=1.13.11";
+import { installTimelineDrag } from "./ui/timeline-drag.js?v=1.13.11";
 import {
   buildCourseOccurrences,
   courseHasConflict,
@@ -88,39 +89,39 @@ import {
   markCourseDuplicates,
   parseCourseText,
   parseCourseRows,
-} from "./services/course-schedule-rules.js?v=1.13.10";
+} from "./services/course-schedule-rules.js?v=1.13.11";
 import {
   deleteCourseTemplate,
   getCourseTemplates,
   saveCourseTemplates,
-} from "./services/course-schedule-service.js?v=1.13.10";
+} from "./services/course-schedule-service.js?v=1.13.11";
 import {
   COURSE_EXAMPLE,
   courseImportEntryHtml,
   courseImportPreviewHtml,
   courseManagerHtml,
   deleteCourseDialogHtml,
-} from "./views/course-import.js?v=1.13.10";
+} from "./views/course-import.js?v=1.13.11";
 import {
   parseDelimitedText,
   readCourseSpreadsheet,
   rowsToTsv,
-} from "./services/table-file.js?v=1.13.10";
+} from "./services/table-file.js?v=1.13.11";
 import {
   applyFeatureSettings,
   FEATURES,
-} from "./config/features.js?v=1.13.10";
+} from "./config/features.js?v=1.13.11";
 import {
   DEFAULT_THEME_ID,
   normalizeThemeId,
   THEME_OPTIONS,
-} from "./config/themes.js?v=1.13.10";
+} from "./config/themes.js?v=1.13.11";
 import {
   buildTaskCalendarIcs,
   calendarFileName,
   findDueTaskReminder,
   reminderKey,
-} from "./services/reminder-rules.js?v=1.13.10";
+} from "./services/reminder-rules.js?v=1.13.11";
 import {
   careForPet,
   awardPetPointsForTask,
@@ -131,14 +132,14 @@ import {
   reAdoptPet,
   tapPetEgg,
   treatPet,
-} from "./services/pet-service.js?v=1.13.10";
-import { petView } from "./views/pet.js?v=1.13.10";
+} from "./services/pet-service.js?v=1.13.11";
+import { petView } from "./views/pet.js?v=1.13.11";
 import {
   isPetSleepTime,
   PET_CARE_ACTIONS,
   PET_CARE_COSTS,
   petVisualState,
-} from "./services/pet-rules.js?v=1.13.10";
+} from "./services/pet-rules.js?v=1.13.11";
 
 const ALL_ROUTES = [
   { id: "today", label: "今天", icon: "today" },
@@ -1581,12 +1582,12 @@ async function handleSubmit(event) {
         throw new Error("至少选择一项作业或一条老师反馈。");
       }
       const result = await commitTeacherImport({
-        message: state.importMessage,
         tasks,
         feedback,
         today: state.today,
       });
       closeDialog();
+      state.importMessage = "";
       state.importParsed = null;
       if (result.tasks.some((task) => task.date === state.today)) {
         state.route = "today";
@@ -2006,6 +2007,7 @@ document.addEventListener("change", async (event) => {
       );
       if (!confirmed) return;
       await importDatabase(payload);
+      await scrubTeacherImportMessages().catch(() => 0);
       state.parentUnlocked = false;
       await refresh();
       state.route = FEATURES.rewards ? "rewards" : "today";
@@ -2068,6 +2070,7 @@ async function boot() {
     render();
     await backfillTaskSubjects();
     await backfillFeedbackSubjects().catch(() => 0);
+    await scrubTeacherImportMessages().catch(() => 0);
     await backfillPetPointsForCompletedTasks().catch(() => 0);
     await refresh();
     render();

@@ -3,7 +3,7 @@ import {
   timeRangeLabel,
   WEEKDAY_OPTIONS,
   weekdayLabel,
-} from "../services/course-schedule-rules.js?v=1.13.10";
+} from "../services/course-schedule-rules.js?v=1.13.11";
 import { formatMinutes } from "../utils/date.js";
 import { escapeAttr, escapeHtml, icon } from "../ui/html.js";
 
@@ -163,11 +163,11 @@ export function deleteCourseDialogHtml(course) {
     </div>`;
 }
 
-export const COURSE_EXAMPLE = `**11:20—12:00**：第四节 美术（钟维）
-- **14:45—15:25**：第五节 语文（钟献英）
-- **15:40—16:20**：第六节 信息科技（杨馥蔓）
+export const COURSE_EXAMPLE = `**11:20—12:00**：第四节 美术（示例老师丙）
+- **14:45—15:25**：第五节 语文（示例老师甲）
+- **15:40—16:20**：第六节 信息科技（示例老师丁）
 
 **星期三**
 - **8:00—8:20**：早餐
-- **8:20—9:00**：第一节 语文（钟献英）
-- **9:30—10:10**：第二节 数学（刘娟）`;
+- **8:20—9:00**：第一节 语文（示例老师甲）
+- **9:30—10:10**：第二节 数学（示例老师乙）`;

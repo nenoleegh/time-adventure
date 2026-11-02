@@ -4,11 +4,11 @@ import {
   openDatabase,
   putMany,
   transactionDone,
-} from "./db.js?v=1.13.10";
+} from "./db.js?v=1.13.11";
 import { makeId } from "../utils/id.js";
 import { dateKey } from "../utils/date.js";
-import { detectSubject, normalizeEstimate } from "./task-rules.js?v=1.13.10";
-import { parseTeacherMessage } from "./teacher-import-rules.js?v=1.13.10";
+import { detectSubject, normalizeEstimate } from "./task-rules.js?v=1.13.11";
+import { parseTeacherMessage } from "./teacher-import-rules.js?v=1.13.11";
 
 const FEEDBACK_BACKFILL_VERSION = 3;
 
@@ -17,7 +17,12 @@ export async function getFeedbackForDate(day) {
   return notes.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
 }
 
-export async function commitTeacherImport({ message, tasks, feedback, today = dateKey() }) {
+export function teacherImportMetadata(record) {
+  const { message: _discardedMessage, ...metadata } = record;
+  return metadata;
+}
+
+export async function commitTeacherImport({ tasks, feedback, today = dateKey() }) {
   const importId = makeId("import");
   const now = new Date().toISOString();
   const dates = [...new Set(tasks.map((task) => task.date))];
@@ -44,7 +49,7 @@ export async function commitTeacherImport({ message, tasks, feedback, today = da
       actualMinutes: null,
       status: "planned",
       sortOrder: orderByDate[task.date]++,
-      notes: String(task.sourceExcerpt || "").slice(0, 160),
+      notes: "",
       scheduledStart: task.scheduledStart || "",
       scheduledEnd: task.scheduledEnd || "",
       breakBeforeMinutes: Number(task.breakBefore?.minutes || 0),
@@ -82,7 +87,6 @@ export async function commitTeacherImport({ message, tasks, feedback, today = da
   const importRecord = {
     id: importId,
     date: today,
-    message: String(message || "").slice(0, 8000),
     taskCount: createdTasks.length,
     feedbackCount: feedbackRecords.length,
     createdAt: now,
@@ -105,6 +109,15 @@ export async function commitTeacherImport({ message, tasks, feedback, today = da
     tasks: createdTasks,
     feedback: feedbackRecords,
   };
+}
+
+export async function scrubTeacherImportMessages() {
+  const imports = await getAll("teacherImports");
+  const scrubbed = imports
+    .filter((item) => Object.hasOwn(item, "message"))
+    .map(teacherImportMetadata);
+  if (scrubbed.length) await putMany("teacherImports", scrubbed);
+  return scrubbed.length;
 }
 
 function normalizedImportText(value) {

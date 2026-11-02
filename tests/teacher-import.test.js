@@ -10,6 +10,7 @@ import { resolveImportedTaskSubject } from "../src/services/task-service.js";
 import {
   resolveImportedFeedbackSubject,
   sanitizeImportedFeedbackContent,
+  teacherImportMetadata,
 } from "../src/services/teacher-import-service.js";
 
 const settings = {
@@ -212,9 +213,9 @@ const realMessages = {
   chinese: `今天学习完了第13课，作业为：
 1、完成练习册第13课，若昨天12课未完成的，请一起完成；
 2、完成一份阅读修炼手册，要求第三格为情节图；
-3、订正两次的课堂听写和默写；（2、8、16、17、26、29、31、39、44、46、49，根据作业登记表11或12课背诵默写需加强）
+3、订正两次的课堂听写和默写；（90、91、92、93、94、95，根据作业登记表11或12课背诵默写需加强）
 4、根据作业登记本进行订正各项作业，预习第14课。
-5、这周语文学霸：蔡雁初、陈国涵、陈屹梵、陈昱羽、刁予晴、何凯琳、李昕珊、梁宁恩、梁屹坤、石茁桦、王炳杰、余欣洛、禹闻希；语文之星：侯语棠、梁钧睿、梁清悦、刘铭浩、杨宸宇。（打√的都是未能按时提交，后面补交的，今天的一号本未交的同学下周一补给我）`,
+5、这周语文学霸：同学甲、同学乙、同学丙；语文之星：同学丁、同学戊。（打√的都是未能按时提交，后面补交的，今天的一号本未交的同学下周一补给我）`,
   math: `10.23数学
 一、作业
 1.订正错题、练计算（小数除法）
@@ -224,9 +225,9 @@ const realMessages = {
 5.轴对称练习卷一张。
 二、小结
 1.课堂学习了平移，完成了数学书P41-42、44。
-2.表扬每日一题（选做）A的16人：37.25.9.23.43.3.12.6.41.38.45.32.14.22.20.21。
-3.表扬练习册P43A+的21人：19.40.36.3.11.28.35.1.49.41.27.37.7.25.18.9.38.45.34.47.4。
-4.启智17-20还有错题没订正的18人：1.2.5.7.8.13.16.17.18.20.21.22.26.27.28.29.33.46。
+2.表扬每日一题（选做）A的3人：91.92.93。
+3.表扬练习册P43A+的3人：91.94.95。
+4.启智17-20还有错题没订正的3人：91.96.97。
 （周一再检查！！！）`,
   english: `10.23英语学习情况反馈
 1️⃣课堂学习
@@ -241,7 +242,7 @@ const realMessages = {
 
 const realMessageSettings = {
   ...settings,
-  identifiers: ["16", "37", "19", "陈国涵"],
+  identifiers: ["91", "92", "93", "同学甲"],
 };
 
 test("real Chinese homework message separates actions and targeted feedback", () => {
@@ -263,7 +264,7 @@ test("real Chinese homework message separates actions and targeted feedback", ()
   );
   assert.ok(parsed.feedback.every((note) => note.subject === "语文"));
   assert.equal(
-    parsed.feedback.some((note) => /蔡雁初|侯语棠/.test(note.content)),
+    parsed.feedback.some((note) => /同学乙|同学丙/.test(note.content)),
     false,
   );
 });
@@ -341,7 +342,7 @@ test("numbered emoji subject homework headings start a task section", () => {
 3.熟读书本第33页内容、知识清单作文
 4.预习书本30页语音
 3️⃣作业反馈
-试卷没交的同学请明天再上交：2.5.7.9.16.17.26.31.33.39`,
+试卷没交的同学请明天再上交：90.91.92.93.94.95。`,
     {
       today: "2026-10-27",
       settings: realMessageSettings,
@@ -433,16 +434,16 @@ test("automatic schedule adds a short break after 45 to 59 focused minutes", () 
 
 test("students listed as not corrected are recorded as criticism", () => {
   const parsed = parseTeacherMessage(
-    "以下同学没有订正：3.8.16.27",
+    "以下同学没有订正：90.91.92.93",
     {
       today: "2026-10-24",
-      settings: realMessageSettings,
+      settings: { ...realMessageSettings, identifiers: ["91"] },
       now: new Date(2026, 9, 24, 10, 0),
     },
   );
   assert.equal(parsed.feedback.length, 1);
   assert.equal(parsed.feedback[0].type, "criticism");
-  assert.deepEqual(parsed.feedback[0].matchedIdentifiers, ["16"]);
+  assert.deepEqual(parsed.feedback[0].matchedIdentifiers, ["91"]);
   assert.match(parsed.feedback[0].content, /没有订正/);
 });
 
@@ -450,13 +451,13 @@ test("copied list noise and delayed correction wording keep feedback", () => {
   const parsed = parseTeacherMessage(
     `数学-刘老师 16:16:23
 二、小结
-2.表扬每日一题A的12人\u00144：22.21.37.41.38.12.3.6.43.45.32.25。
-练习册P43没及时订正的6人：2.20.33。`,
+2.表扬每日一题A的3人\u00144：91.92.93。
+练习册P43没及时订正的3人：94.95.96。`,
     {
       today: "2026-10-26",
       settings: {
         ...realMessageSettings,
-        identifiers: [...realMessageSettings.identifiers, "20"],
+        identifiers: [...realMessageSettings.identifiers, "94"],
       },
       now: new Date(2026, 9, 26, 18, 5),
     },
@@ -499,8 +500,8 @@ test("combined teacher messages keep each subject and preserve follow-up checks"
 3.启智21。
 4.每日一题（选做）：[图片]。
 二、小结
-2.表扬练习册P44A+的30人：3.20.33。
-4.启智17-20还有错题没订正的11人：2.20.33。
+2.表扬练习册P44A+的3人：91.94.95。
+4.启智17-20还有错题没订正的3人：92.94.96。
 （周二再检查！！！）
 
 英语-王老师 17:56:02
@@ -510,12 +511,12 @@ test("combined teacher messages keep each subject and preserve follow-up checks"
 （2）复习书本32页内容
 （3）预习书本第33页内容
 3.作业反馈
-批评第二单元试卷没交的同学：2.20.33`,
+批评第二单元试卷没交的同学：91.94.95`,
     {
       today: "2026-10-26",
       settings: {
         ...realMessageSettings,
-        identifiers: [...realMessageSettings.identifiers, "20"],
+        identifiers: [...realMessageSettings.identifiers, "94"],
       },
       now: new Date(2026, 9, 26, 18, 5),
     },
@@ -549,6 +550,21 @@ test("combined teacher messages keep each subject and preserve follow-up checks"
       (note) => note.type === "criticism" && note.subject === "英语",
     ),
   );
+});
+
+test("teacher import metadata discards the pasted message", () => {
+  const metadata = teacherImportMetadata({
+    id: "import_example",
+    date: "2026-11-02",
+    message: "测试老师消息原文",
+    taskCount: 3,
+    feedbackCount: 1,
+    createdAt: "2026-11-02T10:00:00.000Z",
+  });
+  assert.equal(Object.hasOwn(metadata, "message"), false);
+  assert.equal(metadata.date, "2026-11-02");
+  assert.equal(metadata.taskCount, 3);
+  assert.equal(metadata.feedbackCount, 1);
 });
 
 test("annotation homework is captured and future class drills do not move review to tomorrow", () => {
@@ -614,14 +630,14 @@ test("legacy imports are rematched to the correct subject section", () => {
 3.启智21。
 4.每日一题（选做）：[图片]。
 二、小结
-2.表扬练习册P44A+的30人：3.20.33。
-4.启智17-20还有错题没订正的11人：2.20.33。
+2.表扬练习册P44A+的3人：91.94.95。
+4.启智17-20还有错题没订正的3人：92.94.96。
 （周二再检查！！！）
 
 英语-王老师 17:56:02
 10.26英语学习情况
 3.作业反馈
-批评第二单元试卷没交的同学：2.20.33`,
+批评第二单元试卷没交的同学：91.94.95`,
   };
 
   assert.equal(

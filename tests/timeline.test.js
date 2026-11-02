@@ -116,7 +116,7 @@ test("week view shows the teacher beside each course name", () => {
       {
         id: "course-1",
         title: "数学",
-        teacher: "刘娟",
+        teacher: "示例老师乙",
         weekday: 1,
         startTime: "09:30",
         endTime: "10:10",
@@ -125,5 +125,5 @@ test("week view shows the teacher beside each course name", () => {
       },
     ],
   });
-  assert.match(html, /数学（刘娟）/);
+  assert.match(html, /数学（示例老师乙）/);
 });
